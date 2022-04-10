@@ -6,7 +6,7 @@ const AuthContext = createContext();
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
-  let baseURL = `http://localhost:8000`;
+  let baseURL = `${process.env.REACT_APP_API_URL}`;
   let [authTokens, setAuthTokens] = useState(() =>
     localStorage.getItem("authTokens")
       ? JSON.parse(localStorage.getItem("authTokens"))
