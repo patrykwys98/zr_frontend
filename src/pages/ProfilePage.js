@@ -26,10 +26,22 @@ function ProfilePage() {
     getProfile();
   }, []);
 
-  let changePassword = async () => {
+  let changePassword = async (e) => {
     if (newPassword !== confirmNewPassword) {
       alert("Passwords do not match");
-      return;
+    } else {
+      let response = await api.put(
+        `${process.env.REACT_APP_API_URL}/change-password/`,
+        {
+          old_password: oldPassword,
+          new_password: newPassword,
+        }
+      );
+      if (response.data.success) {
+        navigate("/");
+      } else {
+        alert("Wrong password");
+      }
     }
   };
 
