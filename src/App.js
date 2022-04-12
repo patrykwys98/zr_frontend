@@ -6,7 +6,7 @@ import PrivateRoute from "./utils/PrivateRoute";
 import { AuthProvider } from "./context/AuthContext";
 import ProfilePage from "./pages/ProfilePage";
 import ConfirmPage from "./pages/ConfirmPage";
-
+import RegisterPage from "./pages/RegisterPage";
 function App() {
   return (
     <div className="App">
@@ -37,7 +37,8 @@ function App() {
                   <ConfirmPage />
                 </PrivateRoute>
               }
-            />
+            /> 
+            <Route element={<RegisterPage />} path="/register" />
             <Route element={<LoginPage />} path="/login" />
           </Routes>
         </AuthProvider>

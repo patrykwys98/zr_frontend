@@ -23,14 +23,13 @@ export const AuthProvider = ({ children }) => {
 
   let loginUser = async (e) => {
     e.preventDefault();
-    console.log("Form submitted");
-    let response = await fetch(`${baseURL}/api/token/`, {
+    let response = await fetch(`${baseURL}/token/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: e.target.username.value,
+        email: e.target.username.value,
         password: e.target.password.value,
       }),
     });

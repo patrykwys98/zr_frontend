@@ -16,13 +16,26 @@ function ProfilePage() {
   let [sex, setSex] = useState("");
   let [phoneNumber, setPhoneNumber] = useState("");
 
+  let [oldPassword, setOldPassword] = useState("");
+  let [newPassword, setNewPassword] = useState("");
+  let [confirmNewPassword, setConfirmNewPassword] = useState("");
+
+  let [isValid, setIsValid] = useState(false);
+
   useEffect(() => {
     getProfile();
   }, []);
 
+  let changePassword = async () => {
+    if (newPassword !== confirmNewPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+  };
+
   let getProfile = async () => {
     let response = await api.get(
-      `${process.env.REACT_APP_API_URL}/api/profile/`
+      `${process.env.REACT_APP_API_URL}/profiles/getProfile/`
     );
     if (response.status === 200) {
       const profile = response.data;
@@ -114,6 +127,38 @@ function ProfilePage() {
       >
         Submit
       </Button>
+      <form onSubmit={changePassword}>
+        <Form.Group className="mb-3" controlId="formOldPassword">
+          <Form.Label>Old Password</Form.Label>
+          <Form.Control
+            type="password"
+            name="oldPassword"
+            placeholder="Password"
+            onChange={(e) => setOldPassword(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formNewPassword">
+          <Form.Label>New Password</Form.Label>
+          <Form.Control
+            type="password"
+            name="password1"
+            placeholder="Password"
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formRepeatNewPassword">
+          <Form.Label>Confirm New Password</Form.Label>
+          <Form.Control
+            type="password"
+            name="password2"
+            placeholder="Password"
+            onChange={(e) => setConfirmNewPassword(e.target.value)}
+          />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+      </form>
     </>
   );
 }

@@ -10,7 +10,7 @@ function ConfirmPage() {
 
   const confirmHandler = async () => {
     let response = await api.put(
-      `${process.env.REACT_APP_API_URL}/api/profile/update/`,
+      `${process.env.REACT_APP_API_URL}/profiles/updateProfile/`,
       {
         name: state.userName,
         surname: state.userSurname,
