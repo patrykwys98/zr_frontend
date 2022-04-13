@@ -20,7 +20,6 @@ function ProfilePage() {
   let [newPassword, setNewPassword] = useState("");
   let [confirmNewPassword, setConfirmNewPassword] = useState("");
 
-  let [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
     getProfile();

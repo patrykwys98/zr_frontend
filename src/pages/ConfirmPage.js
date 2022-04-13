@@ -5,12 +5,11 @@ import useAxios from "../utils/useAxios";
 function ConfirmPage() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  console.log(state);
   let api = useAxios();
 
   const confirmHandler = async () => {
     let response = await api.put(
-      `${process.env.REACT_APP_API_URL}/profiles/updateProfile/`,
+      `${process.env.REACT_APP_API_URL}/profiles/updateProfile/update/`,
       {
         name: state.userName,
         surname: state.userSurname,

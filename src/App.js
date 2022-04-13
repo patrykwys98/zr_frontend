@@ -7,6 +7,10 @@ import { AuthProvider } from "./context/AuthContext";
 import ProfilePage from "./pages/ProfilePage";
 import ConfirmPage from "./pages/ConfirmPage";
 import RegisterPage from "./pages/RegisterPage";
+import CreateProjectPage from "./pages/CreateProjectPage";
+import ProjectPage from "./pages/ProjectPage";
+import UpdateProjectPage from "./pages/UpdateProjectPage";
+
 function App() {
   return (
     <div className="App">
@@ -37,7 +41,31 @@ function App() {
                   <ConfirmPage />
                 </PrivateRoute>
               }
-            /> 
+            />
+            <Route
+              path="/createProject"
+              element={
+                <PrivateRoute>
+                  <CreateProjectPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/getProject/:id"
+              element={
+                <PrivateRoute>
+                  <ProjectPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/updateProject"
+              element={
+                <PrivateRoute>
+                  <UpdateProjectPage />
+                </PrivateRoute>
+              }
+            />
             <Route element={<RegisterPage />} path="/register" />
             <Route element={<LoginPage />} path="/login" />
           </Routes>
