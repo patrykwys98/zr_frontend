@@ -9,16 +9,17 @@ function ConfirmPage() {
 
   const confirmHandler = async () => {
     let response = await api.put(
-      `${process.env.REACT_APP_API_URL}/profiles/updateProfile/update/`,
+      `${process.env.REACT_APP_API_URL}/profiles/updateProfile/`,
       {
         name: state.userName,
         surname: state.userSurname,
       }
     );
+    navigate(-1);
   };
 
   if (!state) {
-    navigate("/");
+    navigate(-1);
   }
   return (
     <div>

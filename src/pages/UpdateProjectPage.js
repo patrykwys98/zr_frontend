@@ -4,6 +4,7 @@ import MultiSelect from "react-multiple-select-dropdown-lite";
 import useAxios from "../utils/useAxios";
 import { Form, Button } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
+import { confirm } from "react-confirm-box";
 function UpdateProjectPage() {
   const { state } = useLocation();
   const api = useAxios();
@@ -76,7 +77,8 @@ function UpdateProjectPage() {
       <Button
         variant="primary"
         type="submit"
-        onClick={() => {
+        onClick={async () => {
+          const result = await confirm("Are you sure ?");
           updateProject();
         }}
       >
