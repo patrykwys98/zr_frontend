@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Button, Card } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import useAxios from "../utils/useAxios";
 import CardTitleValue from "../components/CardTitleValue";
 

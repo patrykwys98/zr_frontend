@@ -78,6 +78,7 @@ function UpdateProjectPage() {
       />
       <DateTimePicker onChange={setEndDate} value={endDate} format="y-MM-dd" />
 
+      <MultiSelect onChange={handleUsers} options={options} />
       <Button
         variant="primary"
         type="submit"
@@ -91,7 +92,6 @@ function UpdateProjectPage() {
       >
         Update
       </Button>
-      <MultiSelect onChange={handleUsers} options={options} />
       <Button
         onClick={() => {
           navigate(-1);

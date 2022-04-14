@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
-import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
+import { Navbar, Container, Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 const Header = () => {
   let { user, logoutUser } = useContext(AuthContext);
@@ -18,8 +17,8 @@ const Header = () => {
               <LinkContainer to="/profile">
                 <Navbar.Brand>Profile</Navbar.Brand>
               </LinkContainer>
-              <LinkContainer to="/login">
-                <Navbar.Brand>Login</Navbar.Brand>
+              <LinkContainer to="/createProject">
+                <Navbar.Brand>Create Project</Navbar.Brand>
               </LinkContainer>
               {user ? (
                 <Nav.Link onClick={logoutUser}>Logout</Nav.Link>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 import useAxios from "../utils/useAxios";
-import AuthContext from "../context/AuthContext";
 import { useParams, useNavigate } from "react-router-dom";
 import { ListGroup, Button, Card, Form } from "react-bootstrap";
 import { confirm } from "react-confirm-box";
@@ -36,6 +35,7 @@ function EditProjectPage() {
         }
       );
     }
+    setComment("");
     getProject();
   };
 
