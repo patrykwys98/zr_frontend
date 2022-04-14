@@ -22,7 +22,7 @@ const CreateProjectPage = () => {
       {
         title: title,
         description: description,
-        users: values,
+        users: values.split(","),
         dateOfStart: startDate,
         dateOfEnd: endDate,
       }
