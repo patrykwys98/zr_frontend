@@ -22,7 +22,7 @@ const CreateProjectPage = () => {
       {
         title: title,
         description: description,
-        users: values.split(","),
+        users: values,
         dateOfStart: startDate,
         dateOfEnd: endDate,
       }
@@ -40,75 +40,78 @@ const CreateProjectPage = () => {
   const handleOnchange = (val) => {
     setValues(val);
   };
-  console.log(startDate);
   useEffect(() => {
     getProfiles();
   }, []);
 
   return (
     <Container>
-      <form onSubmit={addProject}>
-        <Form.Group className="mb-3">
-          <Form.Label>Title</Form.Label>
-          <Form.Control
-            type="text"
-            name="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+      <Form.Group className="mb-3">
+        <Form.Label>Title{values}</Form.Label>
+        <Form.Control
+          type="text"
+          name="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </Form.Group>
+      <Row>
+        <Col>
+          Start Date
+          <DateTimePicker
+            onChange={setStartDate}
+            value={startDate}
+            format="y-MM-dd h:mm"
           />
-        </Form.Group>
-        <Row>
-          <Col>
-            Start Date
-            <DateTimePicker
-              onChange={setStartDate}
-              value={startDate}
-              format="y-MM-dd h:mm"
-            />
-          </Col>
-          <Col>
-            End Date
-            <DateTimePicker
-              onChange={setEndDate}
-              value={endDate}
-              format="y-MM-dd h:mm"
-            />
-          </Col>
-        </Row>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            type="text"
-            name="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+        </Col>
+        <Col>
+          End Date
+          <DateTimePicker
+            onChange={setEndDate}
+            value={endDate}
+            format="y-MM-dd h:mm"
           />
-        </Form.Group>
-        <Row style={{ display: "flex", justifyContent: "center" }}>
-          <MultiSelect onChange={handleOnchange} options={options} />
-        </Row>
-        <Row>
-          <Button variant="primary" type="submit">
-            Add Project
-          </Button>
+        </Col>
+      </Row>
 
-          <Button
-            onClick={() => {
-              navigate(-1);
-            }}
-          >
-            Back
-          </Button>
-          <Button
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            Go Home Page
-          </Button>
-        </Row>
-      </form>
+      <Form.Group className="mb-3">
+        <Form.Label>Description</Form.Label>
+        <Form.Control
+          type="text"
+          name="description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </Form.Group>
+      <Row style={{ display: "flex", justifyContent: "center" }}>
+        <MultiSelect onChange={handleOnchange} options={options} />
+      </Row>
+      <Row>
+        <Button
+          variant="primary"
+          type="submit"
+          onClick={() => {
+            addProject();
+          }}
+        >
+          Add Project
+        </Button>
+
+        <Button
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          Back
+        </Button>
+        <Button
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Go Home Page
+        </Button>
+      </Row>
     </Container>
   );
 };

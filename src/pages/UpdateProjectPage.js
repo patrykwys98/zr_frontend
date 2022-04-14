@@ -49,81 +49,79 @@ function UpdateProjectPage() {
     setUsers(val);
   };
   return (
-    <Container>
-      <Form.Group className="mb-3">
-        <Form.Label>Title</Form.Label>
-        <Form.Control
-          type="text"
-          name="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <Form.Label>Description</Form.Label>
-        <Form.Control
-          type="text"
-          name="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <Form.Label>Status</Form.Label>
-        <Form.Control
-          type="text"
-          name="status"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        />
-        <Row>
-          <Col>
-            Start Date
-            <DateTimePicker
-              onChange={setStartDate}
-              value={startDate}
-              format="y-MM-dd h:mm"
-            />
-          </Col>
-          <Col>
-            End Date
-            <DateTimePicker
-              onChange={setEndDate}
-              value={endDate}
-              format="y-MM-dd h:mm"
-            />
-          </Col>
-        </Row>
-        <Row style={{ display: "flex", justifyContent: "center" }}>
-          <MultiSelect onChange={handleUsers} options={options} />
-        </Row>
-        <Row>
-          <Button
-            variant="primary"
-            type="submit"
-            onClick={async () => {
-              const result = await confirm("Are you sure ?");
-              if (result) {
-                updateProject();
-                navigate(-1);
-              }
-            }}
-          >
-            Update
-          </Button>
-          <Button
-            onClick={() => {
+    <Form.Group className="mb-3">
+      <Form.Label>Title</Form.Label>
+      <Form.Control
+        type="text"
+        name="title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <Form.Label>Description</Form.Label>
+      <Form.Control
+        type="text"
+        name="description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+      <Form.Label>Status</Form.Label>
+      <Form.Control
+        type="text"
+        name="status"
+        value={status}
+        onChange={(e) => setStatus(e.target.value)}
+      />
+      <Row>
+        <Col>
+          Start Date
+          <DateTimePicker
+            onChange={setStartDate}
+            value={startDate}
+            format="y-MM-dd h:mm"
+          />
+        </Col>
+        <Col>
+          End Date
+          <DateTimePicker
+            onChange={setEndDate}
+            value={endDate}
+            format="y-MM-dd h:mm"
+          />
+        </Col>
+      </Row>
+      <Row style={{ display: "flex", justifyContent: "center" }}>
+        <MultiSelect onChange={handleUsers} options={options} />
+      </Row>
+      <Row>
+        <Button
+          variant="primary"
+          type="submit"
+          onClick={async () => {
+            const result = await confirm("Are you sure ?");
+            if (result) {
+              updateProject();
               navigate(-1);
-            }}
-          >
-            Back
-          </Button>
-          <Button
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            Go Home Page
-          </Button>
-        </Row>
-      </Form.Group>
-    </Container>
+            }
+          }}
+        >
+          Update
+        </Button>
+        <Button
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          Back
+        </Button>
+        <Button
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Go Home Page
+        </Button>
+      </Row>
+    </Form.Group>
   );
 }
 
