@@ -31,7 +31,7 @@ function UpdateProjectPage() {
       id: state.project.id,
       title: title,
       description: description,
-      users: users.split(","),
+      users: users.toString().split(","),
       dateOfStart: startDate,
       dateOfEnd: endDate,
       status: status,

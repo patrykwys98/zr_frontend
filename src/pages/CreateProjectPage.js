@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const CreateProjectPage = () => {
   const api = useAxios();
-  const [values, setValues] = useState();
+  const [values, setValues] = useState([]);
   const navigate = useNavigate();
   const [options, setOptions] = useState([]);
   const [title, setTitle] = useState("");
@@ -22,7 +22,7 @@ const CreateProjectPage = () => {
       {
         title: title,
         description: description,
-        users: values.split(","),
+        users: values.toString().split(","),
         dateOfStart: startDate,
         dateOfEnd: endDate,
       }
