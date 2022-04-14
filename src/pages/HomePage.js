@@ -25,7 +25,6 @@ const HomePage = () => {
       api
         .delete(`${process.env.REACT_APP_API_URL}/projects/deleteProject/` + id)
         .then((res) => {
-          
           getProjects();
           navigate("/");
         });
@@ -46,12 +45,14 @@ const HomePage = () => {
     <>
       <Table striped bordered hover>
         <thead>
-          <th>Title</th>
-          <th>Author</th>
-          <th>Status</th>
-          <th>Start date</th>
-          <th>End date</th>
-          <th>Action</th>
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Status</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Action</th>
+          </tr>
         </thead>
         <tbody>
           {projects.map((project) => (
