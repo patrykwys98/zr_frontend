@@ -1,9 +1,12 @@
 import axios from "axios";
 import React from "react";
 import { Form, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
   let baseURL = `${process.env.REACT_APP_API_URL}`;
+
+  let navigate = useNavigate();
 
   let registerUser = async (e) => {
     e.preventDefault();
@@ -24,6 +27,7 @@ function RegisterPage() {
           console.log(error.response.data.email);
         }
       });
+    navigate("/login");
   };
 
   return (
@@ -49,15 +53,6 @@ function RegisterPage() {
             type="password"
             name="password"
             placeholder="Password"
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3" controlId="formRepeatPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            name="password2"
-            placeholder="Repeat a password"
           />
         </Form.Group>
 

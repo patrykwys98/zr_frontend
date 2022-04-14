@@ -13,21 +13,26 @@ const Header = () => {
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <LinkContainer to="/profile">
-                <Navbar.Brand>Profile</Navbar.Brand>
-              </LinkContainer>
-              <LinkContainer to="/createProject">
-                <Navbar.Brand>Create Project</Navbar.Brand>
-              </LinkContainer>
-              {user ? (
+            {user ? (
+              <Nav className="me-auto">
+                <LinkContainer to="/profile">
+                  <Navbar.Brand>Profile</Navbar.Brand>
+                </LinkContainer>
+                <LinkContainer to="/createProject">
+                  <Navbar.Brand>Create Project</Navbar.Brand>
+                </LinkContainer>
                 <Nav.Link onClick={logoutUser}>Logout</Nav.Link>
-              ) : (
+              </Nav>
+            ) : (
+              <Nav className="me-auto">
                 <LinkContainer to="/login">
                   <Navbar.Brand>Login</Navbar.Brand>
                 </LinkContainer>
-              )}
-            </Nav>
+                <LinkContainer to="/login">
+                  <Navbar.Brand>Register</Navbar.Brand>
+                </LinkContainer>
+              </Nav>
+            )}
           </Navbar.Collapse>
         </Container>
       </Navbar>

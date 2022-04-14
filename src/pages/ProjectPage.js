@@ -108,7 +108,7 @@ function EditProjectPage() {
             </Card.Header>
           ) : (
             <Card.Header>
-              {comment.isAuthor ? <b>Author</b> : <b>comment.author</b>} - Added
+                {comment.isAuthor ? <b>Author</b> : <b>{comment.author}</b>} - Added
               {new Date(project.dateOfEnd).toLocaleString()}
             </Card.Header>
           )}
