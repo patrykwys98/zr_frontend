@@ -28,7 +28,7 @@ const Header = () => {
                 <LinkContainer to="/login">
                   <Navbar.Brand>Login</Navbar.Brand>
                 </LinkContainer>
-                <LinkContainer to="/login">
+                <LinkContainer to="/register">
                   <Navbar.Brand>Register</Navbar.Brand>
                 </LinkContainer>
               </Nav>
