@@ -4,10 +4,12 @@ import "react-multiple-select-dropdown-lite/dist/index.css";
 import useAxios from "../utils/useAxios";
 import { Form, Button } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
+import { useNavigate } from "react-router-dom";
 
-const Example = () => {
+const CreateProjectPage = () => {
   const api = useAxios();
   const [values, setValues] = useState();
+  const navigate = useNavigate();
   const [options, setOptions] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -25,13 +27,13 @@ const Example = () => {
         dateOfEnd: endDate,
       }
     );
+    navigate("/");
   };
 
   let getProfiles = async () => {
     let response = await api.get(
       `${process.env.REACT_APP_API_URL}/profiles/getProfiles/`
     );
-    console.log(response.data);
     setOptions(response.data);
   };
 
@@ -48,41 +50,62 @@ const Example = () => {
     <>
       <form onSubmit={addProject}>
         <Form.Group className="mb-3">
-          <Form.Label>Name</Form.Label>
+          <Form.Label>Title</Form.Label>
           <Form.Control
             type="text"
-            name="userName"
+            name="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </Form.Group>
-        <DateTimePicker
-          onChange={setStartDate}
-          value={startDate}
-          format="y-MM-dd"
-        />
-        <DateTimePicker
-          onChange={setEndDate}
-          value={endDate}
-          format="y-MM-dd"
-        />
+        <Form.Group>
+          Start Date
+          <DateTimePicker
+            onChange={setStartDate}
+            value={startDate}
+            format="y-MM-dd h:mm"
+          />
+          End Date
+          <DateTimePicker
+            onChange={setEndDate}
+            value={endDate}
+            format="y-MM-dd h:mm"
+          />
+        </Form.Group>
+
         <Form.Group className="mb-3">
-          <Form.Label>Surname</Form.Label>
+          <Form.Label>Description</Form.Label>
           <Form.Control
             type="text"
-            name="userSurname"
+            name="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </Form.Group>
+
+        <MultiSelect onChange={handleOnchange} options={options} />
+
         <Button variant="primary" type="submit">
           Add Project
         </Button>
-      </form>
 
-      <MultiSelect onChange={handleOnchange} options={options} />
+        <Button
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          Back
+        </Button>
+        <Button
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Go Home Page
+        </Button>
+      </form>
     </>
   );
 };
 
-export default Example;
+export default CreateProjectPage;

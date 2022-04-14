@@ -7,37 +7,34 @@ import DateTimePicker from "react-datetime-picker";
 import { confirm } from "react-confirm-box";
 function UpdateProjectPage() {
   const { state } = useLocation();
+  const navigate = useNavigate();
   const api = useAxios();
-  const [values, setValues] = useState();
+
   const [options, setOptions] = useState([]);
 
+  const [users, setUsers] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [status, setStatus] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
-  let getProfiles = async () => {
+  const getProfiles = async () => {
     let response = await api.get(
       `${process.env.REACT_APP_API_URL}/profiles/getProfiles/`
     );
-    console.log(response.data);
     setOptions(response.data);
   };
 
   const updateProject = async () => {
-    const users = [];
-    if (values) {
-      const users = values.split(",");
-    } else {
-      const users = [];
-    }
     await api.put(`${process.env.REACT_APP_API_URL}/projects/updateProject/`, {
       id: state.project.id,
       title: title,
       description: description,
-      users: users,
+      users: users.split(","),
       dateOfStart: startDate,
       dateOfEnd: endDate,
+      status: status,
     });
   };
 
@@ -45,27 +42,34 @@ function UpdateProjectPage() {
     getProfiles();
     setTitle(state.project.title);
     setDescription(state.project.description);
+    setStatus(state.project.status);
   }, []);
 
-  const handleOnchange = (val) => {
-    setValues(val);
-    console.log(JSON.stringify(val));
+  const handleUsers = (val) => {
+    setUsers(val);
   };
   return (
     <Form.Group className="mb-3">
       <Form.Label>Title</Form.Label>
       <Form.Control
-        type="title"
+        type="text"
         name="title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
       <Form.Label>Description</Form.Label>
       <Form.Control
-        type="description"
+        type="text"
         name="description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
+      />
+      <Form.Label>Status</Form.Label>
+      <Form.Control
+        type="text"
+        name="status"
+        value={status}
+        onChange={(e) => setStatus(e.target.value)}
       />
       <DateTimePicker
         onChange={setStartDate}
@@ -79,12 +83,29 @@ function UpdateProjectPage() {
         type="submit"
         onClick={async () => {
           const result = await confirm("Are you sure ?");
-          updateProject();
+          if (result) {
+            updateProject();
+            navigate(-1);
+          }
         }}
       >
         Update
       </Button>
-      <MultiSelect onChange={handleOnchange} options={options} />
+      <MultiSelect onChange={handleUsers} options={options} />
+      <Button
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        Back
+      </Button>
+      <Button
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        Go Home Page
+      </Button>
     </Form.Group>
   );
 }

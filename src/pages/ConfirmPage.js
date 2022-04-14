@@ -1,7 +1,9 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 import useAxios from "../utils/useAxios";
+import CardTitleValue from "../components/CardTitleValue";
+
 function ConfirmPage() {
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -13,6 +15,10 @@ function ConfirmPage() {
       {
         name: state.userName,
         surname: state.userSurname,
+        email: state.userEmail,
+        phoneNumber: state.userPhoneNumber,
+        sex: state.userSex,
+        age: state.userAge,
       }
     );
     navigate(-1);
@@ -22,15 +28,30 @@ function ConfirmPage() {
     navigate(-1);
   }
   return (
-    <div>
-      {state.userEmail}
-      {state.userName}
-      {state.userSurname}
-      {state.userAge}
-      {state.userSex}
-      {state.userPhoneNumber}
+    <>
+      <CardTitleValue title="Email" value={state.userEmail} />
+      <CardTitleValue title="Name" value={state.userName} />
+      <CardTitleValue title="Surname" value={state.userSurname} />
+      <CardTitleValue title="Phone Number" value={state.userPhoneNumber} />
+      <CardTitleValue title="Sex" value={state.useSex} />
+      <CardTitleValue title="Age" value={state.userAge} />
+
       <Button onClick={confirmHandler}>Confirm</Button>
-    </div>
+      <Button
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        Back
+      </Button>
+      <Button
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        Go Home Page
+      </Button>
+    </>
   );
 }
 

@@ -10,11 +10,17 @@ const Header = () => {
       <Navbar bg="dark" expand="lg">
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand>ZR - Patryk Wysocki</Navbar.Brand>
+            <Navbar.Brand>Projects</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
+              <LinkContainer to="/profile">
+                <Navbar.Brand>Profile</Navbar.Brand>
+              </LinkContainer>
+              <LinkContainer to="/login">
+                <Navbar.Brand>Login</Navbar.Brand>
+              </LinkContainer>
               {user ? (
                 <Nav.Link onClick={logoutUser}>Logout</Nav.Link>
               ) : (
