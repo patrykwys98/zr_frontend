@@ -74,9 +74,13 @@ function UpdateProjectPage() {
       <DateTimePicker
         onChange={setStartDate}
         value={startDate}
-        format="y-MM-dd"
+        format="y-MM-dd h:mm"
       />
-      <DateTimePicker onChange={setEndDate} value={endDate} format="y-MM-dd" />
+      <DateTimePicker
+        onChange={setEndDate}
+        value={endDate}
+        format="y-MM-dd h:mm"
+      />
 
       <MultiSelect onChange={handleUsers} options={options} />
       <Button
