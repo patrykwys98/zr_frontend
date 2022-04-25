@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Row, Col } from "react-bootstrap";
 import useAxios from "../utils/useAxios";
 import AuthContext from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -133,63 +133,81 @@ function ProfilePage() {
     <>
       {errorMessage && <ErrorMessage variant="danger" message={errorMessage} />}
       <Form>
-        <Form.Group className="mb-3">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type="email"
-            name="userMail"
-            value={mail}
-            onChange={(e) => setMail(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            type="text"
-            name="userName"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Surname</Form.Label>
-          <Form.Control
-            type="text"
-            name="userSurname"
-            value={surname}
-            onChange={(e) => setSurname(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Age</Form.Label>
-          <Form.Control
-            type="number"
-            name="userAge"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Sex</Form.Label>
-          <Form.Select
-            aria-label="Select sex"
-            onChange={(e) => setSex(e.target.value)}
-            value={sex}
-          >
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </Form.Select>
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Phone</Form.Label>
-          <Form.Control
-            type="number"
-            name="userPhone"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-          />
-        </Form.Group>
+        <Row>
+          <Col>
+            <Form.Group className="mb-3">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                name="userMail"
+                value={mail}
+                onChange={(e) => setMail(e.target.value)}
+              />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group className="mb-3">
+              <Form.Label>Phone</Form.Label>
+              <Form.Control
+                type="number"
+                name="userPhone"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Form.Group className="mb-3">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="userName"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group className="mb-3">
+              <Form.Label>Surname</Form.Label>
+              <Form.Control
+                type="text"
+                name="userSurname"
+                value={surname}
+                onChange={(e) => setSurname(e.target.value)}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Form.Group className="mb-3">
+              <Form.Label>Age</Form.Label>
+              <Form.Control
+                type="number"
+                name="userAge"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+              />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group className="mb-3">
+              <Form.Label>Sex</Form.Label>
+              <Form.Select
+                aria-label="Select sex"
+                onChange={(e) => setSex(e.target.value)}
+                value={sex}
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </Form.Select>
+            </Form.Group>
+          </Col>
+        </Row>
 
         <Button
           variant="primary"
