@@ -38,6 +38,14 @@ function ProfilePage() {
     }
   };
 
+  const checkEmail = (email) => {
+    if (validator.isEmail(email) === true) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   useEffect(() => {
     getProfile();
   }, []);
@@ -51,7 +59,8 @@ function ProfilePage() {
       name === "" ||
       surname === "" ||
       mail === "" ||
-      checkPhoneNumber(phoneNumber) !== true
+      checkPhoneNumber(phoneNumber) !== true ||
+      checkEmail(mail) !== true
     ) {
       isFormValid(false);
       setErrorMessage("Please fill all fields correctly");
@@ -65,7 +74,6 @@ function ProfilePage() {
 
   useEffect(() => {
     checkForm();
-    checkPhoneNumber(phoneNumber);
   }, [age, name, surname, mail, phoneNumber]);
 
   let changePassword = async (e) => {
@@ -75,14 +83,20 @@ function ProfilePage() {
       if (newPassword !== confirmNewPassword) {
         alert("Passwords do not match");
       } else {
-        let response = await api.put(
-          `${process.env.REACT_APP_API_URL}/change-password/`,
-          {
+        await api
+          .put(`${process.env.REACT_APP_API_URL}/change-password/`, {
             old_password: oldPassword,
             new_password: newPassword,
-          }
-        );
-        navigate("/");
+          })
+          .then((response) => {
+            if (response.data.status === "success") {
+              alert("Password changed successfully");
+              navigate("/");
+            }
+          })
+          .catch((error) => {
+            alert(error.response.data.message);
+          });
       }
     }
   };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, isValidElement } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MultiSelect } from "react-multi-select-component";
 import useAxios from "../utils/useAxios";
@@ -12,7 +12,7 @@ function UpdateProjectPage() {
 
   const [options, setOptions] = useState([]);
 
-  const [users, setUsers] = useState(state.project.users);
+  const [users] = useState(state.project.users);
   const [title, setTitle] = useState(state.project.title);
   const [description, setDescription] = useState(state.project.description);
   const [status, setStatus] = useState(state.project.status);
