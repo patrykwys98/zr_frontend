@@ -118,7 +118,7 @@ const CreateProjectPage = () => {
             className="mt-2"
             onChange={setStartDate}
             value={startDate}
-            format="y-MM-dd h:mm"
+            format="y-MM-dd"
           />
         </Col>
         <Col>
@@ -133,7 +133,7 @@ const CreateProjectPage = () => {
             className="mt-2"
             onChange={setEndDate}
             value={endDate}
-            format="y-MM-dd h:mm"
+            format="y-MM-dd"
           />
         </Col>
       </Row>
