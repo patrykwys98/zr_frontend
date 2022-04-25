@@ -47,7 +47,7 @@ const CreateProjectPage = () => {
   return (
     <Container>
       <Form.Group className="mb-3">
-        <Form.Label>Title{values}</Form.Label>
+        <Form.Label>Title</Form.Label>
         <Form.Control
           type="text"
           name="title"

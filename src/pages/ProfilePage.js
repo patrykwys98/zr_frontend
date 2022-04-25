@@ -4,6 +4,7 @@ import useAxios from "../utils/useAxios";
 import AuthContext from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { confirm } from "react-confirm-box";
+import validator from "validator";
 
 function ProfilePage() {
   let [profile, setProfile] = useState([]);
@@ -21,10 +22,51 @@ function ProfilePage() {
   let [oldPassword, setOldPassword] = useState("");
   let [newPassword, setNewPassword] = useState("");
   let [confirmNewPassword, setConfirmNewPassword] = useState("");
+  let [formValid, isFormValid] = useState(true);
+
+  let [errorMessage, setErrorMessage] = useState();
+
+  const checkPhoneNumber = (number) => {
+    if (
+      validator.isMobilePhone(number) === true &&
+      number.length >= 9 &&
+      number.length <= 12
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   useEffect(() => {
     getProfile();
   }, []);
+
+  const checkForm = () => {
+    if (
+      parseInt(age) === 0 ||
+      parseInt(age) > 120 ||
+      parseInt(age) < 18 ||
+      age === "" ||
+      name === "" ||
+      surname === "" ||
+      mail === "" ||
+      checkPhoneNumber(phoneNumber) !== true
+    ) {
+      isFormValid(false);
+      setErrorMessage("Please fill all fields correctly");
+    } else {
+      isFormValid(true);
+      setErrorMessage();
+    }
+  };
+
+  console.log(formValid);
+
+  useEffect(() => {
+    checkForm();
+    checkPhoneNumber(phoneNumber);
+  }, [age, name, surname, mail, phoneNumber]);
 
   let changePassword = async (e) => {
     e.preventDefault();
@@ -75,6 +117,7 @@ function ProfilePage() {
   };
   return (
     <>
+      {errorMessage}
       <Form>
         <Form.Group className="mb-3">
           <Form.Label>Email address</Form.Label>
@@ -106,7 +149,7 @@ function ProfilePage() {
         <Form.Group className="mb-3">
           <Form.Label>Age</Form.Label>
           <Form.Control
-            type="text"
+            type="number"
             name="userAge"
             value={age}
             onChange={(e) => setAge(e.target.value)}
@@ -124,7 +167,7 @@ function ProfilePage() {
         <Form.Group className="mb-3">
           <Form.Label>Phone</Form.Label>
           <Form.Control
-            type="text"
+            type="number"
             name="userPhone"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
@@ -134,6 +177,7 @@ function ProfilePage() {
         <Button
           variant="primary"
           type="submit"
+          disabled={!formValid}
           onClick={() => {
             updateProfile();
           }}

@@ -17,6 +17,7 @@ function EditProjectPage() {
       `${process.env.REACT_APP_API_URL}/projects/getProject/${id}`
     );
     setProject(response.data);
+    console.log(response.data);
   };
 
   const handleUpdate = () => {

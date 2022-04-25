@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Container } from "react-bootstrap";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import Header from "./components/Header";
@@ -13,65 +14,67 @@ import UpdateProjectPage from "./pages/UpdateProjectPage";
 
 function App() {
   return (
-    <div className="App">
+    <>
       <Router>
         <AuthProvider>
           <Header />
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <PrivateRoute>
-                  <HomePage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <PrivateRoute>
-                  <ProfilePage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/confirm"
-              element={
-                <PrivateRoute>
-                  <ConfirmPage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/createProject"
-              element={
-                <PrivateRoute>
-                  <CreateProjectPage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/getProject/:id"
-              element={
-                <PrivateRoute>
-                  <ProjectPage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/updateProject"
-              element={
-                <PrivateRoute>
-                  <UpdateProjectPage />
-                </PrivateRoute>
-              }
-            />
-            <Route element={<RegisterPage />} path="/register" />
-            <Route element={<LoginPage />} path="/login" />
-          </Routes>
+          <Container>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <PrivateRoute>
+                    <HomePage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <PrivateRoute>
+                    <ProfilePage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/confirm"
+                element={
+                  <PrivateRoute>
+                    <ConfirmPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/createProject"
+                element={
+                  <PrivateRoute>
+                    <CreateProjectPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/getProject/:id"
+                element={
+                  <PrivateRoute>
+                    <ProjectPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/updateProject"
+                element={
+                  <PrivateRoute>
+                    <UpdateProjectPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route element={<RegisterPage />} path="/register" />
+              <Route element={<LoginPage />} path="/login" />
+            </Routes>
+          </Container>
         </AuthProvider>
       </Router>
-    </div>
+    </>
   );
 }
 

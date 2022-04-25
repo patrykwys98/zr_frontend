@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, isValidElement } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import MultiSelect from "react-multiple-select-dropdown-lite";
+import { MultiSelect } from "react-multi-select-component";
 import useAxios from "../utils/useAxios";
-import { Form, Button, Row, Col, Container } from "react-bootstrap";
+import { Form, Button, Row, Col, ButtonGroup } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
 import { confirm } from "react-confirm-box";
 function UpdateProjectPage() {
@@ -12,12 +12,30 @@ function UpdateProjectPage() {
 
   const [options, setOptions] = useState([]);
 
-  const [users, setUsers] = useState([]);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("");
+  const [users, setUsers] = useState(state.project.users);
+  const [title, setTitle] = useState(state.project.title);
+  const [description, setDescription] = useState(state.project.description);
+  const [status, setStatus] = useState(state.project.status);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+
+  const [usersInProject, setUsersInProject] = useState([]);
+
+  useEffect(() => {
+    setUsersInProject(
+      options.filter((option) => {
+        return users.find((userId) => userId === parseInt(option.value));
+      })
+    );
+  }, [users, options]);
+
+  const compareDates = () => {
+    if (startDate < endDate) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   const getProfiles = async () => {
     let response = await api.get(
@@ -31,7 +49,7 @@ function UpdateProjectPage() {
       id: state.project.id,
       title: title,
       description: description,
-      users: users.toString().split(","),
+      users: usersInProject.map((user) => parseInt(user.value)),
       dateOfStart: startDate,
       dateOfEnd: endDate,
       status: status,
@@ -40,88 +58,103 @@ function UpdateProjectPage() {
 
   useEffect(() => {
     getProfiles();
-    setTitle(state.project.title);
-    setDescription(state.project.description);
-    setStatus(state.project.status);
   }, []);
 
-  const handleUsers = (val) => {
-    setUsers(val);
-  };
+  useEffect(() => {
+    compareDates();
+  }, [startDate, endDate]);
+
   return (
-    <Form.Group className="mb-3">
-      <Form.Label>Title</Form.Label>
-      <Form.Control
-        type="text"
-        name="title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <Form.Label>Description</Form.Label>
-      <Form.Control
-        type="text"
-        name="description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <Form.Label>Status</Form.Label>
-      <Form.Control
-        type="text"
-        name="status"
-        value={status}
-        onChange={(e) => setStatus(e.target.value)}
-      />
-      <Row>
-        <Col>
-          Start Date
-          <DateTimePicker
-            onChange={setStartDate}
-            value={startDate}
-            format="y-MM-dd h:mm"
+    <>
+      <Form.Group className="mb-3">
+        <Form.Label>Title</Form.Label>
+        <Form.Control
+          type="text"
+          name="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <Form.Label>Description</Form.Label>
+        <Form.Control
+          as="textarea"
+          rows={6}
+          type="text"
+          name="description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <Row>
+          <Col>
+            <Form.Select
+              className="m-2"
+              size="sm"
+              aria-label="Select status"
+              onChange={(e) => setStatus(e.target.value)}
+              value={status}
+            >
+              <option value="New">New</option>
+              <option value="In progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </Form.Select>
+          </Col>
+          <Col>
+            Start Date
+            <DateTimePicker
+              className="mt-2"
+              onChange={setStartDate}
+              value={startDate}
+              format="y-MM-dd h:mm"
+            />
+          </Col>
+          <Col>
+            End Date
+            <DateTimePicker
+              className="mt-2"
+              onChange={setEndDate}
+              value={endDate}
+              format="y-MM-dd h:mm"
+            />
+          </Col>
+        </Row>
+        <Row style={{ display: "flex", justifyContent: "center" }}>
+          <MultiSelect
+            options={options}
+            value={usersInProject}
+            onChange={setUsersInProject}
+            labelledBy="Select users"
           />
-        </Col>
-        <Col>
-          End Date
-          <DateTimePicker
-            onChange={setEndDate}
-            value={endDate}
-            format="y-MM-dd h:mm"
-          />
-        </Col>
-      </Row>
-      <Row style={{ display: "flex", justifyContent: "center" }}>
-        <MultiSelect onChange={handleUsers} options={options} />
-      </Row>
+        </Row>
+      </Form.Group>
       <Row>
-        <Button
-          variant="primary"
-          type="submit"
-          onClick={async () => {
-            const result = await confirm("Are you sure ?");
-            if (result) {
-              updateProject();
+        <ButtonGroup className="d-flex">
+          <Button
+            className="m-1"
+            variant="primary"
+            type="submit"
+            onClick={async () => {
+              const result = await confirm("Are you sure ?");
+              if (result) {
+                updateProject();
+                navigate(-1);
+              }
+            }}
+          >
+            Update
+          </Button>
+
+          <Button
+            className="m-1"
+            variant="primary"
+            type="submit"
+            onClick={() => {
               navigate(-1);
-            }
-          }}
-        >
-          Update
-        </Button>
-        <Button
-          onClick={() => {
-            navigate(-1);
-          }}
-        >
-          Back
-        </Button>
-        <Button
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          Go Home Page
-        </Button>
+            }}
+          >
+            Back
+          </Button>
+        </ButtonGroup>
       </Row>
-    </Form.Group>
+    </>
   );
 }
 

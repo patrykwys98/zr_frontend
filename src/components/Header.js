@@ -5,7 +5,7 @@ import { LinkContainer } from "react-router-bootstrap";
 const Header = () => {
   let { user, logoutUser } = useContext(AuthContext);
   return (
-    <div>
+    <>
       <Navbar bg="dark" expand="lg">
         <Container>
           <LinkContainer to="/">
@@ -36,7 +36,7 @@ const Header = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-    </div>
+    </>
   );
 };
 
