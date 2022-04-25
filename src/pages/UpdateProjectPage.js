@@ -41,7 +41,7 @@ function UpdateProjectPage() {
       id: state.project.id,
       title: title,
       description: description,
-      users: usersInProject.map((user) => parseInt(user.value)),
+      users: usersInProject?.map((user) => parseInt(user.value)),
       dateOfStart: startDate,
       dateOfEnd: endDate,
       status: status,
@@ -71,7 +71,7 @@ function UpdateProjectPage() {
   useEffect(() => {
     setUsersInProject(
       options.filter((option) => {
-        return users.find((userId) => userId === parseInt(option.value));
+        return users?.find((userId) => userId === parseInt(option.value));
       })
     );
   }, [users, options]);
