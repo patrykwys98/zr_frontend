@@ -33,7 +33,7 @@ function ConfirmPage() {
       <CardTitleValue title="Name" value={state.userName} />
       <CardTitleValue title="Surname" value={state.userSurname} />
       <CardTitleValue title="Phone Number" value={state.userPhoneNumber} />
-      <CardTitleValue title="Sex" value={state.useSex} />
+      <CardTitleValue title="Sex" value={state.userSex} />
       <CardTitleValue title="Age" value={state.userAge} />
 
       <Button onClick={confirmHandler}>Confirm</Button>

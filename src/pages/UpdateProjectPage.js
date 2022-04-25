@@ -5,6 +5,7 @@ import useAxios from "../utils/useAxios";
 import { Form, Button, Row, Col, ButtonGroup } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
 import { confirm } from "react-confirm-box";
+import InfoBadge from "../components/InfoBadge";
 function UpdateProjectPage() {
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -16,26 +17,18 @@ function UpdateProjectPage() {
   const [title, setTitle] = useState(state.project.title);
   const [description, setDescription] = useState(state.project.description);
   const [status, setStatus] = useState(state.project.status);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(
+    new Date(state.project.dateOfStart)
+  );
+  const [endDate, setEndDate] = useState(new Date(state.project.dateOfEnd));
+
+  const [dateIsValid, setDateIsValid] = useState(true);
+  const [titleIsValid, setTitleIsValid] = useState(true);
+  const [descriptionIsValid, setDescriptionIsValid] = useState(true);
 
   const [usersInProject, setUsersInProject] = useState([]);
 
-  useEffect(() => {
-    setUsersInProject(
-      options.filter((option) => {
-        return users.find((userId) => userId === parseInt(option.value));
-      })
-    );
-  }, [users, options]);
-
-  const compareDates = () => {
-    if (startDate < endDate) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const getProfiles = async () => {
     let response = await api.get(
@@ -61,20 +54,56 @@ function UpdateProjectPage() {
   }, []);
 
   useEffect(() => {
-    compareDates();
+    setTitleIsValid(title.length > 0 ? true : false);
+  }, [title]);
+
+  useEffect(() => {
+    setDescriptionIsValid(description.length > 0 ? true : false);
+  }, [description]);
+
+  useEffect(() => {
+    setDateIsValid(startDate < endDate ? true : false);
   }, [startDate, endDate]);
+
+  useEffect(() => {
+    setIsFormValid(titleIsValid && descriptionIsValid && dateIsValid);
+  }, [titleIsValid, descriptionIsValid, dateIsValid]);
+
+  useEffect(() => {
+    setUsersInProject(
+      options.filter((option) => {
+        return users.find((userId) => userId === parseInt(option.value));
+      })
+    );
+  }, [users, options]);
 
   return (
     <>
       <Form.Group className="mb-3">
-        <Form.Label>Title</Form.Label>
+        <Form.Label>
+          Title{" "}
+          {!titleIsValid && (
+            <InfoBadge
+              variant="danger"
+              message="Please enter a title for your project"
+            />
+          )}
+        </Form.Label>
         <Form.Control
           type="text"
           name="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <Form.Label>Description</Form.Label>
+        <Form.Label>
+          Description
+          {!descriptionIsValid && (
+            <InfoBadge
+              variant="danger"
+              message="Please enter a description for your project"
+            />
+          )}
+        </Form.Label>
         <Form.Control
           as="textarea"
           rows={6}
@@ -99,20 +128,32 @@ function UpdateProjectPage() {
           </Col>
           <Col>
             Start Date
+            {!dateIsValid && (
+              <InfoBadge
+                variant="danger"
+                message="End date must be after start date"
+              />
+            )}
             <DateTimePicker
               className="mt-2"
               onChange={setStartDate}
               value={startDate}
-              format="y-MM-dd h:mm"
+              format="y-MM-dd"
             />
           </Col>
           <Col>
             End Date
+            {!dateIsValid && (
+              <InfoBadge
+                variant="danger"
+                message="End date must be after start date"
+              />
+            )}
             <DateTimePicker
               className="mt-2"
               onChange={setEndDate}
               value={endDate}
-              format="y-MM-dd h:mm"
+              format="y-MM-dd"
             />
           </Col>
         </Row>
@@ -131,6 +172,7 @@ function UpdateProjectPage() {
             className="m-1"
             variant="primary"
             type="submit"
+            disabled={!isFormValid}
             onClick={async () => {
               const result = await confirm("Are you sure ?");
               if (result) {

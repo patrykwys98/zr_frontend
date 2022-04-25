@@ -6,25 +6,27 @@ import { Link, useNavigate } from "react-router-dom";
 import { confirm } from "react-confirm-box";
 import validator from "validator";
 
+import ErrorMessage from "../components/ErrorMessage";
+
 function ProfilePage() {
-  let [profile, setProfile] = useState([]);
+  const [profile, setProfile] = useState([]);
 
-  let api = useAxios();
-  let navigate = useNavigate();
+  const api = useAxios();
+  const navigate = useNavigate();
 
-  let [mail, setMail] = useState("");
-  let [name, setName] = useState("");
-  let [surname, setSurname] = useState("");
-  let [age, setAge] = useState(0);
-  let [sex, setSex] = useState("");
-  let [phoneNumber, setPhoneNumber] = useState("");
+  const [mail, setMail] = useState("");
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [age, setAge] = useState(0);
+  const [sex, setSex] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
-  let [oldPassword, setOldPassword] = useState("");
-  let [newPassword, setNewPassword] = useState("");
-  let [confirmNewPassword, setConfirmNewPassword] = useState("");
-  let [formValid, isFormValid] = useState(true);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [formValid, isFormValid] = useState(true);
 
-  let [errorMessage, setErrorMessage] = useState();
+  const [errorMessage, setErrorMessage] = useState();
 
   const checkPhoneNumber = (number) => {
     if (
@@ -46,10 +48,6 @@ function ProfilePage() {
     }
   };
 
-  useEffect(() => {
-    getProfile();
-  }, []);
-
   const checkForm = () => {
     if (
       parseInt(age) === 0 ||
@@ -70,11 +68,13 @@ function ProfilePage() {
     }
   };
 
-  console.log(formValid);
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   useEffect(() => {
     checkForm();
-  }, [age, name, surname, mail, phoneNumber]);
+  }, [age, name, sex, surname, mail, phoneNumber]);
 
   let changePassword = async (e) => {
     e.preventDefault();
@@ -131,7 +131,7 @@ function ProfilePage() {
   };
   return (
     <>
-      {errorMessage}
+      {errorMessage && <ErrorMessage variant="danger" message={errorMessage} />}
       <Form>
         <Form.Group className="mb-3">
           <Form.Label>Email address</Form.Label>
@@ -171,12 +171,15 @@ function ProfilePage() {
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Sex</Form.Label>
-          <Form.Control
-            type="text"
-            name="userSex"
-            value={sex}
+          <Form.Select
+            aria-label="Select sex"
             onChange={(e) => setSex(e.target.value)}
-          />
+            value={sex}
+          >
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </Form.Select>
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Phone</Form.Label>

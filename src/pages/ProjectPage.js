@@ -70,11 +70,11 @@ function EditProjectPage() {
         <ListGroup.Item></ListGroup.Item>
         <ListGroup.Item>
           <h3>Date of start</h3>
-          {new Date(project.dateOfStart).toLocaleString()}
+          {new Date(project.dateOfStart).toLocaleDateString()}
         </ListGroup.Item>
         <ListGroup.Item>
           <h3>Date of end</h3>
-          {new Date(project.dateOfEnd).toLocaleString()}
+          {new Date(project.dateOfEnd).toLocaleDateString()}
         </ListGroup.Item>
         <ListGroup.Item>
           <h3>Users</h3>
@@ -111,7 +111,7 @@ function EditProjectPage() {
             <Card.Header>
               {comment.isAuthor ? <b>Author</b> : <b>{comment.author}</b>} -
               Added
-              {new Date(comment.createdAt).toLocaleString()}
+              {new Date(comment.createdAt).toLocalte()}
             </Card.Header>
           )}
 

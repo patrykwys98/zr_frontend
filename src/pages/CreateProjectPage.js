@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import MultiSelect from "react-multiple-select-dropdown-lite";
 import "react-multiple-select-dropdown-lite/dist/index.css";
 import useAxios from "../utils/useAxios";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { Form, Button, Row, Col, ButtonGroup } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
 import { useNavigate } from "react-router-dom";
 
@@ -45,7 +45,7 @@ const CreateProjectPage = () => {
   }, []);
 
   return (
-    <Container>
+    <>
       <Form.Group className="mb-3">
         <Form.Label>Title</Form.Label>
         <Form.Control
@@ -55,10 +55,23 @@ const CreateProjectPage = () => {
           onChange={(e) => setTitle(e.target.value)}
         />
       </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>Description</Form.Label>
+        <Form.Control
+          as="textarea"
+          rows={6}
+          type="text"
+          name="description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </Form.Group>
       <Row>
         <Col>
           Start Date
           <DateTimePicker
+            className="mt-2"
             onChange={setStartDate}
             value={startDate}
             format="y-MM-dd h:mm"
@@ -67,52 +80,45 @@ const CreateProjectPage = () => {
         <Col>
           End Date
           <DateTimePicker
+            className="mt-2"
             onChange={setEndDate}
             value={endDate}
             format="y-MM-dd h:mm"
           />
         </Col>
       </Row>
-
-      <Form.Group className="mb-3">
-        <Form.Label>Description</Form.Label>
-        <Form.Control
-          type="text"
-          name="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </Form.Group>
-      <Row style={{ display: "flex", justifyContent: "center" }}>
+      <Row
+        className="m-2"
+        style={{ display: "flex", justifyContent: "center" }}
+      >
         <MultiSelect onChange={handleOnchange} options={options} />
       </Row>
       <Row>
-        <Button
-          variant="primary"
-          type="submit"
-          onClick={() => {
-            addProject();
-          }}
-        >
-          Add Project
-        </Button>
+        <ButtonGroup className="d-flex">
+          <Button
+            className="m-1"
+            variant="primary"
+            type="submit"
+            onClick={() => {
+              addProject();
+            }}
+          >
+            Add Project
+          </Button>
 
-        <Button
-          onClick={() => {
-            navigate(-1);
-          }}
-        >
-          Back
-        </Button>
-        <Button
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          Go Home Page
-        </Button>
+          <Button
+            className="m-1"
+            variant="primary"
+            type="submit"
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            Go Back
+          </Button>
+        </ButtonGroup>
       </Row>
-    </Container>
+    </>
   );
 };
 
