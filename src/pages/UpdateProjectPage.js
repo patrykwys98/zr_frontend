@@ -25,10 +25,9 @@ function UpdateProjectPage() {
   const [dateIsValid, setDateIsValid] = useState(true);
   const [titleIsValid, setTitleIsValid] = useState(true);
   const [descriptionIsValid, setDescriptionIsValid] = useState(true);
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const [usersInProject, setUsersInProject] = useState([]);
-
-  const [isFormValid, setIsFormValid] = useState(false);
 
   const getProfiles = async () => {
     let response = await api.get(

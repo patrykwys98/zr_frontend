@@ -5,6 +5,7 @@ import useAxios from "../utils/useAxios";
 import { Form, Button, Row, Col, ButtonGroup } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
 import { useNavigate } from "react-router-dom";
+import InfoBadge from "../components/InfoBadge";
 
 const CreateProjectPage = () => {
   const api = useAxios();
@@ -15,6 +16,27 @@ const CreateProjectPage = () => {
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+
+  const [dateIsValid, setDateIsValid] = useState(true);
+  const [titleIsValid, setTitleIsValid] = useState(true);
+  const [descriptionIsValid, setDescriptionIsValid] = useState(true);
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  useEffect(() => {
+    setTitleIsValid(title.length > 0 ? true : false);
+  }, [title]);
+
+  useEffect(() => {
+    setDescriptionIsValid(description.length > 0 ? true : false);
+  }, [description]);
+
+  useEffect(() => {
+    setDateIsValid(startDate < endDate ? true : false);
+  }, [startDate, endDate]);
+
+  useEffect(() => {
+    setIsFormValid(titleIsValid && descriptionIsValid && dateIsValid);
+  }, [titleIsValid, descriptionIsValid, dateIsValid]);
 
   const addProject = async () => {
     let response = await api.post(
@@ -47,7 +69,15 @@ const CreateProjectPage = () => {
   return (
     <>
       <Form.Group className="mb-3">
-        <Form.Label>Title</Form.Label>
+        <Form.Label>
+          Title
+          {!titleIsValid && (
+            <InfoBadge
+              variant="danger"
+              message="Please enter a title for your project"
+            />
+          )}
+        </Form.Label>
         <Form.Control
           type="text"
           name="title"
@@ -57,7 +87,15 @@ const CreateProjectPage = () => {
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label>Description</Form.Label>
+        <Form.Label>
+          Description
+          {!descriptionIsValid && (
+            <InfoBadge
+              variant="danger"
+              message="Please enter a description for your project"
+            />
+          )}
+        </Form.Label>
         <Form.Control
           as="textarea"
           rows={6}
@@ -70,6 +108,12 @@ const CreateProjectPage = () => {
       <Row>
         <Col>
           Start Date
+          {!dateIsValid && (
+            <InfoBadge
+              variant="danger"
+              message="End date must be after start date"
+            />
+          )}
           <DateTimePicker
             className="mt-2"
             onChange={setStartDate}
@@ -79,6 +123,12 @@ const CreateProjectPage = () => {
         </Col>
         <Col>
           End Date
+          {!dateIsValid && (
+            <InfoBadge
+              variant="danger"
+              message="End date must be after start date"
+            />
+          )}
           <DateTimePicker
             className="mt-2"
             onChange={setEndDate}
@@ -99,6 +149,7 @@ const CreateProjectPage = () => {
             className="m-1"
             variant="primary"
             type="submit"
+            disabled={!isFormValid}
             onClick={() => {
               addProject();
             }}
