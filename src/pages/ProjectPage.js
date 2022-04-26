@@ -54,13 +54,17 @@ function EditProjectPage() {
   return (
     <>
       <ListGroup>
-        <ListGroup.Item className="text-center">
+        <ListGroup.Item>
           <Row>
+            <Col xs={3}>
+              <h3>Status: {project.status}</h3>
+            </Col>
             {project.isAuthor ? (
               <>
-                <Col xs={11}>
+                <Col xs={8}>
                   <h3>Author: You are author</h3>
                 </Col>
+
                 <Col xs={1}>
                   <Button onClick={handleUpdate} block>
                     Update
@@ -101,17 +105,6 @@ function EditProjectPage() {
             ))}
           </ListGroup.Item>
         )}
-
-        <ListGroup.Item>
-          <Row>
-            <Col>
-              <h3>Project Status</h3>
-            </Col>
-            <Col>
-              <h3>{project.status}</h3>
-            </Col>
-          </Row>
-        </ListGroup.Item>
 
         <ListGroup.Item>
           <form onSubmit={addComment}>
