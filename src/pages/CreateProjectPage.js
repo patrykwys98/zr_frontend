@@ -22,33 +22,14 @@ const CreateProjectPage = () => {
   const [descriptionIsValid, setDescriptionIsValid] = useState(true);
   const [isFormValid, setIsFormValid] = useState(false);
 
-  useEffect(() => {
-    setTitleIsValid(title.length > 0 ? true : false);
-  }, [title]);
-
-  useEffect(() => {
-    setDescriptionIsValid(description.length > 0 ? true : false);
-  }, [description]);
-
-  useEffect(() => {
-    setDateIsValid(startDate < endDate ? true : false);
-  }, [startDate, endDate]);
-
-  useEffect(() => {
-    setIsFormValid(titleIsValid && descriptionIsValid && dateIsValid);
-  }, [titleIsValid, descriptionIsValid, dateIsValid]);
-
   const addProject = async () => {
-    let response = await api.post(
-      `${process.env.REACT_APP_API_URL}/projects/createProject/`,
-      {
-        title: title,
-        description: description,
-        users: values.toString().split(","),
-        dateOfStart: startDate,
-        dateOfEnd: endDate,
-      }
-    );
+    await api.post(`${process.env.REACT_APP_API_URL}/projects/createProject/`, {
+      title: title,
+      description: description,
+      users: values.toString().split(","),
+      dateOfStart: startDate,
+      dateOfEnd: endDate,
+    });
     navigate("/");
   };
 
@@ -65,6 +46,22 @@ const CreateProjectPage = () => {
   useEffect(() => {
     getProfiles();
   }, []);
+
+  useEffect(() => {
+    setTitleIsValid(title.length > 0 ? true : false);
+  }, [title]);
+
+  useEffect(() => {
+    setDescriptionIsValid(description.length > 0 ? true : false);
+  }, [description]);
+
+  useEffect(() => {
+    setDateIsValid(startDate < endDate ? true : false);
+  }, [startDate, endDate]);
+
+  useEffect(() => {
+    setIsFormValid(titleIsValid && descriptionIsValid && dateIsValid);
+  }, [titleIsValid, descriptionIsValid, dateIsValid]);
 
   return (
     <>

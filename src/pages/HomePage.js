@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-import AuthContext from "../context/AuthContext";
+import React, { useState, useEffect } from "react";
 import useAxios from "../utils/useAxios";
 import { Button, Dropdown, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -8,12 +7,7 @@ import { confirm } from "react-confirm-box";
 const HomePage = () => {
   let api = useAxios();
   const navigate = useNavigate();
-  const { user, baseURL } = useContext(AuthContext);
   const [projects, setProjects] = useState([]);
-
-  useEffect(() => {
-    getProjects();
-  }, []);
 
   const handleEditClick = (id) => {
     navigate("/getProject/" + id);
@@ -33,13 +27,17 @@ const HomePage = () => {
 
   const getProjects = async () => {
     await api
-      .get(`${baseURL}/projects/getProjects/`)
+      .get(`${process.env.REACT_APP_API_URL}/projects/getProjects/`)
       .then((res) => {
         const data = res.data;
         setProjects(data);
       })
       .catch((error) => console.error(error));
   };
+
+  useEffect(() => {
+    getProjects();
+  }, []);
 
   return (
     <>

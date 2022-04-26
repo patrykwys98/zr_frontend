@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Button, Row, Col, ButtonGroup } from "react-bootstrap";
 import useAxios from "../utils/useAxios";
 import CardTitleValue from "../components/CardTitleValue";
 
@@ -10,17 +10,14 @@ function ConfirmPage() {
   let api = useAxios();
 
   const confirmHandler = async () => {
-    let response = await api.put(
-      `${process.env.REACT_APP_API_URL}/profiles/updateProfile/`,
-      {
-        name: state.userName,
-        surname: state.userSurname,
-        email: state.userEmail,
-        phoneNumber: state.userPhoneNumber,
-        sex: state.userSex,
-        age: state.userAge,
-      }
-    );
+    await api.put(`${process.env.REACT_APP_API_URL}/profiles/updateProfile/`, {
+      name: state.userName,
+      surname: state.userSurname,
+      email: state.userEmail,
+      phoneNumber: state.userPhoneNumber,
+      sex: state.userSex,
+      age: state.userAge,
+    });
     navigate(-1);
   };
 
@@ -29,28 +26,53 @@ function ConfirmPage() {
   }
   return (
     <>
-      <CardTitleValue title="Email" value={state.userEmail} />
-      <CardTitleValue title="Name" value={state.userName} />
-      <CardTitleValue title="Surname" value={state.userSurname} />
-      <CardTitleValue title="Phone Number" value={state.userPhoneNumber} />
-      <CardTitleValue title="Sex" value={state.userSex} />
-      <CardTitleValue title="Age" value={state.userAge} />
+      <Row>
+        <Col>
+          <CardTitleValue title="Email" value={state.userEmail} />
+        </Col>
+        <Col>
+          <CardTitleValue title="Phone Number" value={state.userPhoneNumber} />
+        </Col>
+      </Row>
 
-      <Button onClick={confirmHandler}>Confirm</Button>
-      <Button
-        onClick={() => {
-          navigate(-1);
-        }}
-      >
-        Back
-      </Button>
-      <Button
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        Go Home Page
-      </Button>
+      <Row>
+        <Col>
+          <CardTitleValue title="Name" value={state.userName} />
+        </Col>
+        <Col>
+          <CardTitleValue title="Surname" value={state.userSurname} />
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
+          <CardTitleValue title="Sex" value={state.userSex} />
+        </Col>
+        <Col>
+          <CardTitleValue title="Age" value={state.userAge} />
+        </Col>
+      </Row>
+      <ButtonGroup className="d-flex m-2">
+        <Button className="m-1" onClick={confirmHandler}>
+          Confirm
+        </Button>
+        <Button
+          className="m-1"
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          Back
+        </Button>
+        <Button
+          className="m-1"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Go Home Page
+        </Button>
+      </ButtonGroup>
     </>
   );
 }

@@ -1,16 +1,14 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import useAxios from "../utils/useAxios";
-import AuthContext from "../context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+
+import {  useNavigate } from "react-router-dom";
 import { confirm } from "react-confirm-box";
 import validator from "validator";
 
 import ErrorMessage from "../components/ErrorMessage";
 
 function ProfilePage() {
-  const [profile, setProfile] = useState([]);
-
   const api = useAxios();
   const navigate = useNavigate();
 
@@ -27,6 +25,58 @@ function ProfilePage() {
   const [formValid, isFormValid] = useState(true);
 
   const [errorMessage, setErrorMessage] = useState();
+
+  let changePassword = async (e) => {
+    e.preventDefault();
+    const result = await confirm("Are you sure?");
+    if (result) {
+      if (newPassword !== confirmNewPassword) {
+        alert("Passwords do not match");
+      } else {
+        await api
+          .put(`${process.env.REACT_APP_API_URL}/change-password/`, {
+            old_password: oldPassword,
+            new_password: newPassword,
+          })
+          .then((response) => {
+            if (response.data.status === "success") {
+              alert("Password changed successfully");
+              navigate("/");
+            }
+          })
+          .catch((error) => {
+            alert(error.response.data.message);
+          });
+      }
+    }
+  };
+
+  let getProfile = async () => {
+    let response = await api.get(
+      `${process.env.REACT_APP_API_URL}/profiles/getProfile/`
+    );
+    if (response.status === 200) {
+      setMail(response.data.email);
+      setName(response.data.name);
+      setSurname(response.data.surname);
+      setAge(response.data.age);
+      setSex(response.data.sex);
+      setPhoneNumber(response.data.phoneNumber);
+    }
+  };
+
+  let updateProfile = () => {
+    navigate("/confirm", {
+      state: {
+        userEmail: mail,
+        userName: name,
+        userSurname: surname,
+        userAge: age,
+        userSex: sex,
+        userPhoneNumber: phoneNumber,
+      },
+    });
+  };
 
   const checkPhoneNumber = (number) => {
     if (
@@ -64,7 +114,7 @@ function ProfilePage() {
       setErrorMessage("Please fill all fields correctly");
     } else {
       isFormValid(true);
-      setErrorMessage();
+      setErrorMessage("");
     }
   };
 
@@ -76,59 +126,7 @@ function ProfilePage() {
     checkForm();
   }, [age, name, sex, surname, mail, phoneNumber]);
 
-  let changePassword = async (e) => {
-    e.preventDefault();
-    const result = await confirm("Are you sure?");
-    if (result) {
-      if (newPassword !== confirmNewPassword) {
-        alert("Passwords do not match");
-      } else {
-        await api
-          .put(`${process.env.REACT_APP_API_URL}/change-password/`, {
-            old_password: oldPassword,
-            new_password: newPassword,
-          })
-          .then((response) => {
-            if (response.data.status === "success") {
-              alert("Password changed successfully");
-              navigate("/");
-            }
-          })
-          .catch((error) => {
-            alert(error.response.data.message);
-          });
-      }
-    }
-  };
 
-  let getProfile = async () => {
-    let response = await api.get(
-      `${process.env.REACT_APP_API_URL}/profiles/getProfile/`
-    );
-    if (response.status === 200) {
-      const profile = response.data;
-      setProfile(profile);
-      setMail(profile.email);
-      setName(profile.name);
-      setSurname(profile.surname);
-      setAge(profile.age);
-      setSex(profile.sex);
-      setPhoneNumber(profile.phoneNumber);
-    }
-  };
-
-  let updateProfile = () => {
-    navigate("/confirm", {
-      state: {
-        userEmail: mail,
-        userName: name,
-        userSurname: surname,
-        userAge: age,
-        userSex: sex,
-        userPhoneNumber: phoneNumber,
-      },
-    });
-  };
   return (
     <>
       {errorMessage && <ErrorMessage variant="danger" message={errorMessage} />}

@@ -22,10 +22,6 @@ function EditProjectPage() {
     setProject(response.data);
   };
 
-  const handleUpdate = () => {
-    navigate("/updateProject", { state: { project } });
-  };
-
   const addComment = async (e) => {
     e.preventDefault();
     const result = await confirm("Are you sure ?");
@@ -39,8 +35,12 @@ function EditProjectPage() {
           alert(error.response.data.message);
         });
     }
-    setComment("");
     getProject();
+    setComment("");
+  };
+
+  const handleUpdate = () => {
+    navigate("/updateProject", { state: { project } });
   };
 
   useEffect(() => {
@@ -54,7 +54,7 @@ function EditProjectPage() {
   return (
     <>
       <ListGroup>
-        <ListGroup.Item>
+        <ListGroup.Item className="text-center">
           <Row>
             {project.isAuthor ? (
               <>
@@ -68,7 +68,7 @@ function EditProjectPage() {
                 </Col>
               </>
             ) : (
-              <h3>{project.author}</h3>
+              <h3>Author: {project.author}</h3>
             )}
           </Row>
         </ListGroup.Item>
@@ -121,6 +121,7 @@ function EditProjectPage() {
                   <Form.Control
                     type="text"
                     placeholder="Enter comment"
+                    value={comment}
                     onChange={(e) => setComment(e.target.value)}
                   />
                 </Col>
@@ -152,7 +153,7 @@ function EditProjectPage() {
                   <Card.Header>
                     {comment.isAuthor ? <b>Author</b> : <b>{comment.author}</b>}{" "}
                     - Added
-                    {new Date(comment.createdAt).toLocalte()}
+                    {new Date(comment.createdAt).toLocaleString()}
                   </Card.Header>
                 )}
 
