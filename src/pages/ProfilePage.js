@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import useAxios from "../utils/useAxios";
 
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { confirm } from "react-confirm-box";
 import validator from "validator";
 
 import ErrorMessage from "../components/ErrorMessage";
+import InfoBadge from "../components/InfoBadge";
 
 function ProfilePage() {
   const api = useAxios();
@@ -25,6 +26,7 @@ function ProfilePage() {
   const [formValid, isFormValid] = useState(true);
 
   const [errorMessage, setErrorMessage] = useState();
+  const [arePasswordsEqual, setArePasswordsEqual] = useState(true);
 
   let changePassword = async (e) => {
     e.preventDefault();
@@ -119,13 +121,16 @@ function ProfilePage() {
   };
 
   useEffect(() => {
+    setArePasswordsEqual(newPassword === confirmNewPassword);
+  }, [newPassword, confirmNewPassword]);
+
+  useEffect(() => {
     getProfile();
   }, []);
 
   useEffect(() => {
     checkForm();
   }, [age, name, sex, surname, mail, phoneNumber]);
-
 
   return (
     <>
@@ -230,6 +235,9 @@ function ProfilePage() {
         </Form.Group>
         <Form.Group className="mb-3" controlId="formNewPassword">
           <Form.Label>New Password</Form.Label>
+          {!arePasswordsEqual && (
+            <InfoBadge message="Passwords don't match" variant="danger" />
+          )}
           <Form.Control
             type="password"
             name="password1"
@@ -239,6 +247,9 @@ function ProfilePage() {
         </Form.Group>
         <Form.Group className="mb-3" controlId="formRepeatNewPassword">
           <Form.Label>Confirm New Password</Form.Label>
+          {!arePasswordsEqual && (
+            <InfoBadge message="Passwords don't match" variant="danger" />
+          )}
           <Form.Control
             type="password"
             name="password2"
@@ -246,7 +257,7 @@ function ProfilePage() {
             onChange={(e) => setConfirmNewPassword(e.target.value)}
           />
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" disabled={!arePasswordsEqual}>
           Submit
         </Button>
       </form>
