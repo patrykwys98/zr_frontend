@@ -28,7 +28,6 @@ function RegisterPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        username: e.target.username.value,
         password: e.target.password.value,
         email: e.target.email.value,
       })
@@ -42,8 +41,6 @@ function RegisterPage() {
         if (error.response) {
           if (error.response.data.email) {
             setErrorMessage(error.response.data.email);
-          } else if (error.response.data.username) {
-            setErrorMessage(error.response.data.username);
           }
         }
       });
@@ -56,13 +53,6 @@ function RegisterPage() {
   useEffect(() => {
     setIsValidPassword(validator.isLength(password, { min: 6 }));
   }, [password]);
-
-  useEffect(() => {
-    setIsValidUserName(
-      validator.isAlphanumeric(userName) &&
-        validator.isLength(userName, { min: 4 })
-    );
-  }, [userName]);
 
   useEffect(() => {
     setIsFormValid(isValidMail && isValidPassword && isValidUserName);
@@ -89,28 +79,6 @@ function RegisterPage() {
             }}
           />
         </Form.Group>
-
-        <Form.Group className="mb-3" controlId="formBasicUsername">
-          <Form.Label>
-            Enter Username{" "}
-            {!isValidUserName && (
-              <InfoBadge
-                variant="danger"
-                message="Please enter a valid username"
-              />
-            )}
-          </Form.Label>
-          <Form.Control
-            type="text"
-            name="username"
-            placeholder="Enter a username"
-            value={userName}
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
-          />
-        </Form.Group>
-
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>
             Password{" "}
