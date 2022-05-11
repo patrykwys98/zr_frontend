@@ -89,11 +89,11 @@ function EditProjectPage() {
           <Row>
             <Col>
               <h3>Date of start</h3>
-              {new Date(project.dateOfStart).toLocaleDateString()}
+              {project.dateOfStart}
             </Col>
             <Col>
               <h3>Date of end</h3>
-              {new Date(project.dateOfEnd).toLocaleDateString()}
+              {project.dateOfEnd}
             </Col>
           </Row>
         </ListGroup.Item>

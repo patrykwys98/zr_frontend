@@ -11,11 +11,9 @@ function RegisterPage() {
 
   const [errorMessage, setErrorMessage] = useState();
   const [mail, setMail] = useState("");
-  const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const [isValidMail, setIsValidMail] = useState(false);
-  const [isValidUserName, setIsValidUserName] = useState(false);
   const [isValidPassword, setIsValidPassword] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
 
@@ -28,8 +26,8 @@ function RegisterPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        password: e.target.password.value,
         email: e.target.email.value,
+        password: e.target.password.value,
       })
       .then((response) => {
         if (response.status === 201) {
@@ -55,8 +53,8 @@ function RegisterPage() {
   }, [password]);
 
   useEffect(() => {
-    setIsFormValid(isValidMail && isValidPassword && isValidUserName);
-  }, [isValidMail, isValidPassword, isValidUserName]);
+    setIsFormValid(isValidMail && isValidPassword);
+  }, [isValidMail, isValidPassword]);
 
   return (
     <>

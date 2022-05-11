@@ -27,8 +27,8 @@ const CreateProjectPage = () => {
       title: title,
       description: description,
       users: values.toString().split(","),
-      dateOfStart: startDate,
-      dateOfEnd: endDate,
+      dateOfStart: startDate.toLocaleDateString("en-CA"),
+      dateOfEnd: endDate.toLocaleDateString("en-CA"),
     });
     navigate("/");
   };
@@ -57,6 +57,7 @@ const CreateProjectPage = () => {
 
   useEffect(() => {
     setDateIsValid(startDate < endDate ? true : false);
+    console.log(startDate, endDate);
   }, [startDate, endDate]);
 
   useEffect(() => {
@@ -115,7 +116,7 @@ const CreateProjectPage = () => {
             className="mt-2"
             onChange={setStartDate}
             value={startDate}
-            format="y-MM-dd"
+            format="dd-MM-y"
           />
         </Col>
         <Col>
@@ -130,7 +131,7 @@ const CreateProjectPage = () => {
             className="mt-2"
             onChange={setEndDate}
             value={endDate}
-            format="y-MM-dd"
+            format="dd-MM-y"
           />
         </Col>
       </Row>

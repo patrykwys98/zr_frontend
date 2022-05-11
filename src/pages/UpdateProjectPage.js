@@ -18,9 +18,12 @@ function UpdateProjectPage() {
   const [description, setDescription] = useState(state.project.description);
   const [status, setStatus] = useState(state.project.status);
   const [startDate, setStartDate] = useState(
-    new Date(state.project.dateOfStart)
+    new Date(state.project.dateOfStart.split("/").reverse().join("/"))
   );
-  const [endDate, setEndDate] = useState(new Date(state.project.dateOfEnd));
+
+  const [endDate, setEndDate] = useState(
+    new Date(state.project.dateOfEnd.split("/").reverse().join("/"))
+  );
 
   const [dateIsValid, setDateIsValid] = useState(true);
   const [titleIsValid, setTitleIsValid] = useState(true);
@@ -42,14 +45,15 @@ function UpdateProjectPage() {
       title: title,
       description: description,
       users: usersInProject?.map((user) => parseInt(user.value)),
-      dateOfStart: startDate,
-      dateOfEnd: endDate,
+      dateOfStart: startDate.toLocaleDateString("en-CA"),
+      dateOfEnd: endDate.toLocaleDateString("en-CA"),
       status: status,
     });
   };
 
   useEffect(() => {
     getProfiles();
+    console.log(startDate, endDate);
   }, []);
 
   useEffect(() => {
@@ -62,6 +66,7 @@ function UpdateProjectPage() {
 
   useEffect(() => {
     setDateIsValid(startDate < endDate ? true : false);
+    console.log(startDate, endDate);
   }, [startDate, endDate]);
 
   useEffect(() => {
@@ -137,7 +142,7 @@ function UpdateProjectPage() {
               className="mt-2"
               onChange={setStartDate}
               value={startDate}
-              format="y-MM-dd"
+              format="dd-MM-y"
             />
           </Col>
           <Col>
@@ -152,7 +157,7 @@ function UpdateProjectPage() {
               className="mt-2"
               onChange={setEndDate}
               value={endDate}
-              format="y-MM-dd"
+              format="dd-MM-y"
             />
           </Col>
         </Row>

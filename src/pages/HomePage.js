@@ -58,8 +58,8 @@ const HomePage = () => {
               <td>{project.title}</td>
               <td>{project.author}</td>
               <td>{project.status}</td>
-              <td>{new Date(project.dateOfStart).toLocaleDateString()}</td>
-              <td>{new Date(project.dateOfEnd).toLocaleDateString()}</td>
+              <td>{project.dateOfStart}</td>
+              <td>{project.dateOfEnd}</td>
               <td>
                 {project.isAuthor ? (
                   <Dropdown>
