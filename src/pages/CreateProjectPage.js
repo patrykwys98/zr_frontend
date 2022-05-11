@@ -20,17 +20,27 @@ const CreateProjectPage = () => {
   const [dateIsValid, setDateIsValid] = useState(true);
   const [titleIsValid, setTitleIsValid] = useState(true);
   const [descriptionIsValid, setDescriptionIsValid] = useState(true);
-  const [isFormValid, setIsFormValid] = useState(false);
 
   const addProject = async () => {
-    await api.post(`${process.env.REACT_APP_API_URL}/projects/createProject/`, {
-      title: title,
-      description: description,
-      users: values.toString().split(","),
-      dateOfStart: startDate.toLocaleDateString("en-CA"),
-      dateOfEnd: endDate.toLocaleDateString("en-CA"),
-    });
-    navigate("/");
+    if (title.length === 0) {
+      setTitleIsValid(false);
+    } else if (description.length === 0) {
+      setDescriptionIsValid(false);
+    } else if (startDate > endDate || !startDate || !endDate) {
+      setDateIsValid(false);
+    } else {
+      await api.post(
+        `${process.env.REACT_APP_API_URL}/projects/createProject/`,
+        {
+          title: title,
+          description: description,
+          users: values.toString().split(","),
+          dateOfStart: startDate.toLocaleDateString("en-CA"),
+          dateOfEnd: endDate.toLocaleDateString("en-CA"),
+        }
+      );
+      navigate("/");
+    }
   };
 
   let getProfiles = async () => {
@@ -46,23 +56,6 @@ const CreateProjectPage = () => {
   useEffect(() => {
     getProfiles();
   }, []);
-
-  useEffect(() => {
-    setTitleIsValid(title.length > 0 ? true : false);
-  }, [title]);
-
-  useEffect(() => {
-    setDescriptionIsValid(description.length > 0 ? true : false);
-  }, [description]);
-
-  useEffect(() => {
-    setDateIsValid(startDate < endDate ? true : false);
-    console.log(startDate, endDate);
-  }, [startDate, endDate]);
-
-  useEffect(() => {
-    setIsFormValid(titleIsValid && descriptionIsValid && dateIsValid);
-  }, [titleIsValid, descriptionIsValid, dateIsValid]);
 
   return (
     <>
@@ -147,7 +140,6 @@ const CreateProjectPage = () => {
             className="m-1"
             variant="primary"
             type="submit"
-            disabled={!isFormValid}
             onClick={() => {
               addProject();
             }}

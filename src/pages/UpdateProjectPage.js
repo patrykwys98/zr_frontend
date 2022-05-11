@@ -28,7 +28,6 @@ function UpdateProjectPage() {
   const [dateIsValid, setDateIsValid] = useState(true);
   const [titleIsValid, setTitleIsValid] = useState(true);
   const [descriptionIsValid, setDescriptionIsValid] = useState(true);
-  const [isFormValid, setIsFormValid] = useState(false);
 
   const [usersInProject, setUsersInProject] = useState([]);
 
@@ -40,38 +39,33 @@ function UpdateProjectPage() {
   };
 
   const updateProject = async () => {
-    await api.put(`${process.env.REACT_APP_API_URL}/projects/updateProject/`, {
-      id: state.project.id,
-      title: title,
-      description: description,
-      users: usersInProject?.map((user) => parseInt(user.value)),
-      dateOfStart: startDate.toLocaleDateString("en-CA"),
-      dateOfEnd: endDate.toLocaleDateString("en-CA"),
-      status: status,
-    });
+    if (title.length === 0) {
+      setTitleIsValid(false);
+    } else if (description.length === 0) {
+      setDescriptionIsValid(false);
+    } else if (startDate > endDate || !startDate || !endDate) {
+      setDateIsValid(false);
+    } else {
+      await api.put(
+        `${process.env.REACT_APP_API_URL}/projects/updateProject/`,
+        {
+          id: state.project.id,
+          title: title,
+          description: description,
+          users: usersInProject?.map((user) => parseInt(user.value)),
+          dateOfStart: startDate.toLocaleDateString("en-CA"),
+          dateOfEnd: endDate.toLocaleDateString("en-CA"),
+          status: status,
+        }
+      );
+      navigate(-1);
+    }
   };
 
   useEffect(() => {
     getProfiles();
     console.log(startDate, endDate);
   }, []);
-
-  useEffect(() => {
-    setTitleIsValid(title.length > 0 ? true : false);
-  }, [title]);
-
-  useEffect(() => {
-    setDescriptionIsValid(description.length > 0 ? true : false);
-  }, [description]);
-
-  useEffect(() => {
-    setDateIsValid(startDate < endDate ? true : false);
-    console.log(startDate, endDate);
-  }, [startDate, endDate]);
-
-  useEffect(() => {
-    setIsFormValid(titleIsValid && descriptionIsValid && dateIsValid);
-  }, [titleIsValid, descriptionIsValid, dateIsValid]);
 
   useEffect(() => {
     setUsersInProject(
@@ -176,12 +170,10 @@ function UpdateProjectPage() {
             className="m-1"
             variant="primary"
             type="submit"
-            disabled={!isFormValid}
             onClick={async () => {
               const result = await confirm("Are you sure ?");
               if (result) {
                 updateProject();
-                navigate(-1);
               }
             }}
           >
