@@ -24,7 +24,8 @@ function ProfilePage() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
-  const [errorMessage, setErrorMessage] = useState();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [arePasswordsEqual, setArePasswordsEqual] = useState(true);
 
   let changePassword = async (e) => {
@@ -33,6 +34,8 @@ function ProfilePage() {
       setErrorMessage("Passwords do not match");
     } else if (oldPassword.length === 0) {
       setErrorMessage("Old password is required");
+    } else if (newPassword.length < 6 || confirmNewPassword.length < 6) {
+      setErrorMessage("Password must be at least 6 characters");
     } else {
       const result = await confirm("Are you sure?");
       if (result) {
@@ -47,7 +50,7 @@ function ProfilePage() {
             })
             .then((response) => {
               if (response.data.status === "success") {
-                setErrorMessage("Password changed successfully");
+                setSuccessMessage("Password changed successfully");
                 navigate("/");
               }
             })
@@ -127,7 +130,9 @@ function ProfilePage() {
   };
 
   useEffect(() => {
-    setArePasswordsEqual(newPassword === confirmNewPassword);
+    setArePasswordsEqual(
+      newPassword === confirmNewPassword && oldPassword.length > 6
+    );
   }, [newPassword, confirmNewPassword]);
 
   useEffect(() => {
@@ -137,6 +142,9 @@ function ProfilePage() {
   return (
     <>
       {errorMessage && <InfoMessage variant="danger" message={errorMessage} />}
+      {successMessage && (
+        <InfoMessage variant="success" message={successMessage} />
+      )}
       <Form>
         <Row>
           <Col>
