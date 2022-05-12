@@ -32,7 +32,7 @@ function ProfilePage() {
     e.preventDefault();
     if (newPassword !== confirmNewPassword) {
       setErrorMessage("Passwords do not match");
-    } else if (oldPassword.length === 0) {
+    } else if (oldPassword.length < 6) {
       setErrorMessage("Old password is required");
     } else if (newPassword.length < 6 || confirmNewPassword.length < 6) {
       setErrorMessage("Password must be at least 6 characters");
@@ -128,12 +128,6 @@ function ProfilePage() {
       });
     }
   };
-
-  useEffect(() => {
-    setArePasswordsEqual(
-      newPassword === confirmNewPassword && oldPassword.length > 6
-    );
-  }, [newPassword, confirmNewPassword]);
 
   useEffect(() => {
     getProfile();

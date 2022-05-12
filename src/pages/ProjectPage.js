@@ -60,7 +60,7 @@ function EditProjectPage() {
         <ListGroup.Item>
           <Row>
             <Col xs={3}>
-              <h3>Status: {project.status}</h3>
+                <h3>Status: {project.status}</h3>
             </Col>
             {project.isAuthor ? (
               <>
@@ -75,7 +75,9 @@ function EditProjectPage() {
                 </Col>
               </>
             ) : (
-              <h3>Author: {project.author}</h3>
+              <Col xs={9}>
+                <h3>Author: {project.author?.replaceAll("None", "")}</h3>
+              </Col>
             )}
           </Row>
         </ListGroup.Item>
