@@ -166,7 +166,7 @@ function EditProjectPage() {
               <Card key={i}>
                 {comment.isAuthor ? (
                   <Card.Header className="bg-dark text-white">
-                    <b>Author</b> - Added
+                    <b>Author</b> - Added{" "}
                     {new Date(comment.createdAt).toLocaleString()}
                   </Card.Header>
                 ) : (
