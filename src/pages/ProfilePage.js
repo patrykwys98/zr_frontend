@@ -49,7 +49,6 @@ function ProfilePage() {
             .then((response) => {
               if (response.data.status === "success") {
                 setSuccessMessage("Password changed successfully");
-                navigate("/");
               }
             })
             .catch((error) => {
