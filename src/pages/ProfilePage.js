@@ -17,7 +17,7 @@ function ProfilePage() {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [age, setAge] = useState(0);
-  const [sex, setSex] = useState("Male");
+  const [sex, setSex] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const [oldPassword, setOldPassword] = useState("");
@@ -65,11 +65,13 @@ function ProfilePage() {
     );
     if (response.status === 200) {
       setMail(response.data.email);
-      setName(response.data.name);
-      setSurname(response.data.surname);
-      setAge(response.data.age);
-      setSex(response.data.sex);
-      setPhoneNumber(response.data.phoneNumber);
+      setName(response.data.name ? response.data.name : "");
+      setSurname(response.data.surname ? response.data.surname : "");
+      setAge(response.data.age ? response.data.age : 18);
+      setSex(response.data.sex ? response.data.sex : "Other");
+      setPhoneNumber(
+        response.data.phoneNumber ? response.data.phoneNumber : ""
+      );
     }
   };
 
@@ -97,7 +99,7 @@ function ProfilePage() {
     e.preventDefault();
     if (
       parseInt(age) === 0 ||
-      parseInt(age) > 120 ||
+      parseInt(age) > 100 ||
       parseInt(age) < 18 ||
       age === ""
     ) {
@@ -108,6 +110,8 @@ function ProfilePage() {
       setErrorMessage("Enter a Valid Phone Number");
     } else if (checkEmail(mail) === false) {
       setErrorMessage("Enter a Valid Email");
+    } else if (!sex) {
+      setErrorMessage("Please enter a gender");
     } else {
       navigate("/confirm", {
         state: {

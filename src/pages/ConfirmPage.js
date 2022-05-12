@@ -16,7 +16,7 @@ function ConfirmPage() {
       email: state.userEmail,
       phoneNumber: state.userPhoneNumber,
       sex: state.userSex,
-      age: state.userAge,
+      age: parseInt(state.userAge),
     });
     navigate(-1);
   };
