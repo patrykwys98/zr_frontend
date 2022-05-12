@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
       ? JSON.parse(localStorage.getItem("authTokens"))
       : null
   );
+  let [message, setMessage] = useState();
   let [user, setUser] = useState(() =>
     localStorage.getItem("authTokens")
       ? jwt_decode(localStorage.getItem("authTokens"))
@@ -40,7 +41,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("authTokens", JSON.stringify(data));
       navigate("/");
     } else {
-      alert("Something went wrong");
+      setMessage("Invalid credentials");
     }
   };
 
@@ -60,6 +61,7 @@ export const AuthProvider = ({ children }) => {
     setAuthTokens: setAuthTokens,
     setUser: setUser,
     baseURL: baseURL,
+    message: message,
   };
 
   useEffect(() => {
