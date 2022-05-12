@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import useAxios from "../utils/useAxios";
 import { useParams, useNavigate } from "react-router-dom";
-import { ListGroup, Button, Card, Form, Row, Col } from "react-bootstrap";
+import {
+  ListGroup,
+  Button,
+  Card,
+  Form,
+  Row,
+  Col,
+  Table,
+} from "react-bootstrap";
 import { confirm } from "react-confirm-box";
 import InfoBadge from "../components/InfoBadge";
 import InfoMessage from "../components/InfoMessage";
@@ -60,7 +68,7 @@ function EditProjectPage() {
         <ListGroup.Item>
           <Row>
             <Col xs={3}>
-                <h3>Status: {project.status}</h3>
+              <h3>Status: {project.status}</h3>
             </Col>
             {project.isAuthor ? (
               <>
@@ -69,7 +77,7 @@ function EditProjectPage() {
                 </Col>
 
                 <Col xs={1}>
-                  <Button onClick={handleUpdate} block>
+                  <Button onClick={handleUpdate}>
                     Update
                   </Button>
                 </Col>
@@ -103,12 +111,28 @@ function EditProjectPage() {
           </Row>
         </ListGroup.Item>
         {project.usersNames && (
-          <ListGroup.Item className="text-center">
-            <h3>Users</h3>
-            {project.usersNames?.map((user) => (
-              <p key={user}>{user.replaceAll("None", "")}</p>
-            ))}
-          </ListGroup.Item>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <td>Name</td>
+                <td>Surname</td>
+                <td>Age</td>
+                <td>Email</td>
+                <td>Phone Number</td>
+              </tr>
+            </thead>
+            <tbody>
+              {project.usersNames.map((user, i) => (
+                <tr key={i}>
+                  <td>{user.name}</td>
+                  <td>{user.surname}</td>
+                  <td>{user.age}</td>
+                  <td>{user.email}</td>
+                  <td>{user.phoneNumber}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         )}
 
         <ListGroup.Item>
