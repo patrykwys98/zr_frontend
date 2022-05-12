@@ -56,7 +56,7 @@ const HomePage = () => {
           {projects.map((project) => (
             <tr key={project.id}>
               <td>{project.title}</td>
-              <td>{project.author}</td>
+              <td>{project.author.replaceAll("None", "")}</td>
               <td>{project.status}</td>
               <td>{project.dateOfStart}</td>
               <td>{project.dateOfEnd}</td>

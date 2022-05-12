@@ -101,7 +101,7 @@ function EditProjectPage() {
           <ListGroup.Item className="text-center">
             <h3>Users</h3>
             {project.usersNames?.map((user) => (
-              <p key={user}>{user}</p>
+              <p key={user}>{user.replaceAll("None", "")}</p>
             ))}
           </ListGroup.Item>
         )}
