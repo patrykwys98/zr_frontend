@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
       setUser(jwt_decode(data.access));
       localStorage.setItem("authTokens", JSON.stringify(data));
       navigate("/");
-    } else {
+    } else if (response.status === 401) {
       setMessage("Invalid credentials");
     }
   };
@@ -62,6 +62,7 @@ export const AuthProvider = ({ children }) => {
     setUser: setUser,
     baseURL: baseURL,
     message: message,
+    setMessage: setMessage,
   };
 
   useEffect(() => {

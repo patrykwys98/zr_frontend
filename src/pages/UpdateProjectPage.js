@@ -36,6 +36,7 @@ function UpdateProjectPage() {
       `${process.env.REACT_APP_API_URL}/profiles/getProfiles/`
     );
     setOptions(response.data);
+    console.log(options);
   };
 
   const updateProject = async () => {

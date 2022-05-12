@@ -17,7 +17,7 @@ function ProfilePage() {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [age, setAge] = useState(0);
-  const [sex, setSex] = useState("");
+  const [sex, setSex] = useState("Male");
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const [oldPassword, setOldPassword] = useState("");
@@ -29,25 +29,32 @@ function ProfilePage() {
 
   let changePassword = async (e) => {
     e.preventDefault();
-    const result = await confirm("Are you sure?");
-    if (result) {
-      if (newPassword !== confirmNewPassword) {
-        alert("Passwords do not match");
-      } else {
-        await api
-          .put(`${process.env.REACT_APP_API_URL}/change-password/`, {
-            old_password: oldPassword,
-            new_password: newPassword,
-          })
-          .then((response) => {
-            if (response.data.status === "success") {
-              alert("Password changed successfully");
-              navigate("/");
-            }
-          })
-          .catch((error) => {
-            alert(error.response.data.message);
-          });
+    if (newPassword !== confirmNewPassword) {
+      setErrorMessage("Passwords do not match");
+    } else if (oldPassword.length === 0) {
+      setErrorMessage("Old password is required");
+    } else {
+      const result = await confirm("Are you sure?");
+      if (result) {
+        if (newPassword !== confirmNewPassword) {
+          alert("Passwords do not match");
+        } else {
+          await api
+            .put(`${process.env.REACT_APP_API_URL}/change-password/`, {
+              old_password: oldPassword,
+              new_password: newPassword,
+              confirm_password: confirmNewPassword,
+            })
+            .then((response) => {
+              if (response.data.status === "success") {
+                alert("Password changed successfully");
+                navigate("/");
+              }
+            })
+            .catch((error) => {
+              setErrorMessage(error.response.data.message);
+            });
+        }
       }
     }
   };
@@ -130,7 +137,7 @@ function ProfilePage() {
         <Row>
           <Col>
             <Form.Group className="mb-3">
-              <Form.Label>Email address</Form.Label>
+              <Form.Label>Contact email address</Form.Label>
               <Form.Control
                 type="email"
                 name="userMail"

@@ -13,60 +13,45 @@ function RegisterPage() {
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [isValidMail, setIsValidMail] = useState(false);
-  const [isValidPassword, setIsValidPassword] = useState(false);
-  const [isFormValid, setIsFormValid] = useState(false);
-
   let navigate = useNavigate();
 
   let registerUser = async (e) => {
     e.preventDefault();
-    await axios
-      .post(`${baseURL}/register/`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        email: e.target.email.value,
-        password: e.target.password.value,
-      })
-      .then((response) => {
-        if (response.status === 201) {
-          navigate("/login");
-          alert("Your account has been registered");
-        }
-      })
-      .catch((error) => {
-        if (error.response) {
-          if (error.response.data.email) {
-            setErrorMessage(error.response.data.email);
+    if (!validator.isEmail(mail)) {
+      setErrorMessage("Invalid email");
+    } else if (!validator.isLength(password, { min: 6 })) {
+      setErrorMessage("Password must be at least 6 characters long");
+    } else {
+      await axios
+        .post(`${baseURL}/register/`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          email: e.target.email.value,
+          password: e.target.password.value,
+        })
+        .then((response) => {
+          if (response.status === 201) {
+            navigate("/login");
+            alert("Your account has been registered");
           }
-        }
-      });
+        })
+        .catch((error) => {
+          if (error.response) {
+            if (error.response.data.email) {
+              setErrorMessage(error.response.data.email);
+            }
+          }
+        });
+    }
   };
-
-  useEffect(() => {
-    setIsValidMail(validator.isEmail(mail));
-  }, [mail]);
-
-  useEffect(() => {
-    setIsValidPassword(validator.isLength(password, { min: 6 }));
-  }, [password]);
-
-  useEffect(() => {
-    setIsFormValid(isValidMail && isValidPassword);
-  }, [isValidMail, isValidPassword]);
 
   return (
     <>
       {errorMessage && <ErrorMessage message={errorMessage} variant="danger" />}
       <form onSubmit={registerUser}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>
-            Email address{" "}
-            {!isValidMail && (
-              <InfoBadge variant="danger" message="Email address is invalid" />
-            )}
-          </Form.Label>
+          <Form.Label>Email address </Form.Label>
           <Form.Control
             type="email"
             name="email"
@@ -78,12 +63,7 @@ function RegisterPage() {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>
-            Password{" "}
-            {!isValidPassword && (
-              <InfoBadge variant="danger" message="Password is too short" />
-            )}
-          </Form.Label>
+          <Form.Label>Password </Form.Label>
           <Form.Control
             type="password"
             name="password"
@@ -95,7 +75,7 @@ function RegisterPage() {
           />
         </Form.Group>
 
-        <Button variant="primary" type="submit" disabled={!isFormValid}>
+        <Button variant="primary" type="submit">
           Register
         </Button>
       </form>
