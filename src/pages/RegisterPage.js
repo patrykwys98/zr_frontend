@@ -1,12 +1,19 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import validator from "validator";
 import InfoMessage from "../components/InfoMessage";
+import AuthContext from "../context/AuthContext";
 
 function RegisterPage() {
   let baseURL = `${process.env.REACT_APP_API_URL}`;
+
+  let { setMessage } = useContext(AuthContext);
+
+  useEffect(() => {
+    setMessage("");
+  }, []);
 
   const [errorMessage, setErrorMessage] = useState();
   const [mail, setMail] = useState("");

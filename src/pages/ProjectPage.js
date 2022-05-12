@@ -77,9 +77,7 @@ function EditProjectPage() {
                 </Col>
 
                 <Col xs={1}>
-                  <Button onClick={handleUpdate}>
-                    Update
-                  </Button>
+                  <Button onClick={handleUpdate}>Update</Button>
                 </Col>
               </>
             ) : (
@@ -122,13 +120,13 @@ function EditProjectPage() {
               </tr>
             </thead>
             <tbody>
-              {project.usersNames.map((user, i) => (
+              {project.usersNames?.map((user, i) => (
                 <tr key={i}>
-                  <td>{user.name}</td>
-                  <td>{user.surname}</td>
-                  <td>{user.age}</td>
-                  <td>{user.email}</td>
-                  <td>{user.phoneNumber}</td>
+                  <td>{user?.name}</td>
+                  <td>{user?.surname}</td>
+                  <td>{user?.age}</td>
+                  <td>{user?.email}</td>
+                  <td>{user?.phoneNumber}</td>
                 </tr>
               ))}
             </tbody>
