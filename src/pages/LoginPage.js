@@ -1,11 +1,12 @@
 import React, { useContext, useEffect } from "react";
 import AuthContext from "../context/AuthContext";
 import { Form, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import ErrorMessage from "../components/ErrorMessage";
+import { useNavigate, useLocation } from "react-router-dom";
+import InfoMessage from "../components/InfoMessage";
 const LoginPage = () => {
   let { loginUser, user, message } = useContext(AuthContext);
   let navigate = useNavigate();
+  const { state } = useLocation();
 
   useEffect(() => {
     if (user) {
@@ -15,7 +16,13 @@ const LoginPage = () => {
 
   return (
     <>
-      {message && <ErrorMessage variant="danger" message={message} />}
+      {state?.accountCreated && (
+        <InfoMessage
+          message="Account created please log in"
+          variant="primary"
+        />
+      )}
+      {message && <InfoMessage variant="danger" message={message} />}
       <Form onSubmit={loginUser}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { confirm } from "react-confirm-box";
 import validator from "validator";
 
-import ErrorMessage from "../components/ErrorMessage";
+import InfoMessage from "../components/InfoMessage";
 import InfoBadge from "../components/InfoBadge";
 
 function ProfilePage() {
@@ -37,7 +37,7 @@ function ProfilePage() {
       const result = await confirm("Are you sure?");
       if (result) {
         if (newPassword !== confirmNewPassword) {
-          alert("Passwords do not match");
+          setErrorMessage("Passwords do not match");
         } else {
           await api
             .put(`${process.env.REACT_APP_API_URL}/change-password/`, {
@@ -47,7 +47,7 @@ function ProfilePage() {
             })
             .then((response) => {
               if (response.data.status === "success") {
-                alert("Password changed successfully");
+                setErrorMessage("Password changed successfully");
                 navigate("/");
               }
             })
@@ -136,7 +136,7 @@ function ProfilePage() {
 
   return (
     <>
-      {errorMessage && <ErrorMessage variant="danger" message={errorMessage} />}
+      {errorMessage && <InfoMessage variant="danger" message={errorMessage} />}
       <Form>
         <Row>
           <Col>

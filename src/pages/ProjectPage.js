@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ListGroup, Button, Card, Form, Row, Col } from "react-bootstrap";
 import { confirm } from "react-confirm-box";
 import InfoBadge from "../components/InfoBadge";
+import InfoMessage from "../components/InfoMessage";
 
 function EditProjectPage() {
   let api = useAxios();
@@ -12,6 +13,7 @@ function EditProjectPage() {
   const { id } = useParams();
   const [project, setProject] = useState([]);
   const [comment, setComment] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [isCommentValid, setIsCommentValid] = useState(false);
 
@@ -32,7 +34,7 @@ function EditProjectPage() {
           text: comment,
         })
         .catch((error) => {
-          alert(error.response.data.message);
+          setErrorMessage(error.response.data.message);
         });
     }
     getProject();
@@ -53,6 +55,7 @@ function EditProjectPage() {
 
   return (
     <>
+      {errorMessage && <InfoMessage message={errorMessage} variant="primary" />}
       <ListGroup>
         <ListGroup.Item>
           <Row>
@@ -144,7 +147,11 @@ function EditProjectPage() {
                   </Card.Header>
                 ) : (
                   <Card.Header>
-                    {comment.isAuthor ? <b>Author</b> : <b>{comment.author}</b>}{" "}
+                    {comment.isAuthor ? (
+                      <b>Author</b>
+                    ) : (
+                      <b>{comment.author.replaceAll("None", "")}</b>
+                    )}{" "}
                     - Added
                     {new Date(comment.createdAt).toLocaleString()}
                   </Card.Header>

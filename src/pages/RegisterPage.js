@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import validator from "validator";
-import InfoBadge from "../components/InfoBadge";
-import ErrorMessage from "../components/ErrorMessage";
+import InfoMessage from "../components/InfoMessage";
 
 function RegisterPage() {
   let baseURL = `${process.env.REACT_APP_API_URL}`;
@@ -32,8 +31,11 @@ function RegisterPage() {
         })
         .then((response) => {
           if (response.status === 201) {
-            navigate("/login");
-            alert("Your account has been registered");
+            navigate("/login", {
+              state: {
+                accountCreated: true,
+              },
+            });
           }
         })
         .catch((error) => {
@@ -48,7 +50,7 @@ function RegisterPage() {
 
   return (
     <>
-      {errorMessage && <ErrorMessage message={errorMessage} variant="danger" />}
+      {errorMessage && <InfoMessage message={errorMessage} variant="danger" />}
       <form onSubmit={registerUser}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address </Form.Label>
