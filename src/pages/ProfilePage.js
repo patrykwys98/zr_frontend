@@ -23,7 +23,6 @@ function ProfilePage() {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
-  const [formValid, isFormValid] = useState(true);
 
   const [errorMessage, setErrorMessage] = useState();
   const [arePasswordsEqual, setArePasswordsEqual] = useState(true);
@@ -67,19 +66,6 @@ function ProfilePage() {
     }
   };
 
-  let updateProfile = () => {
-    navigate("/confirm", {
-      state: {
-        userEmail: mail,
-        userName: name,
-        userSurname: surname,
-        userAge: age,
-        userSex: sex,
-        userPhoneNumber: phoneNumber,
-      },
-    });
-  };
-
   const checkPhoneNumber = (number) => {
     if (
       validator.isMobilePhone(number) === true &&
@@ -100,23 +86,32 @@ function ProfilePage() {
     }
   };
 
-  const checkForm = () => {
+  let updateProfile = async (e) => {
+    e.preventDefault();
     if (
       parseInt(age) === 0 ||
       parseInt(age) > 120 ||
       parseInt(age) < 18 ||
-      age === "" ||
-      name === "" ||
-      surname === "" ||
-      mail === "" ||
-      checkPhoneNumber(phoneNumber) !== true ||
-      checkEmail(mail) !== true
+      age === ""
     ) {
-      isFormValid(false);
-      setErrorMessage("Please fill all fields correctly");
+      setErrorMessage("Enter a Valid Age");
+    } else if (name === "" || surname === "" || mail === "") {
+      setErrorMessage("Enter a Name, Surname and Email");
+    } else if (checkPhoneNumber(phoneNumber) === false) {
+      setErrorMessage("Enter a Valid Phone Number");
+    } else if (checkEmail(mail) === false) {
+      setErrorMessage("Enter a Valid Email");
     } else {
-      isFormValid(true);
-      setErrorMessage("");
+      navigate("/confirm", {
+        state: {
+          userEmail: mail,
+          userName: name,
+          userSurname: surname,
+          userAge: age,
+          userSex: sex,
+          userPhoneNumber: phoneNumber,
+        },
+      });
     }
   };
 
@@ -127,10 +122,6 @@ function ProfilePage() {
   useEffect(() => {
     getProfile();
   }, []);
-
-  useEffect(() => {
-    checkForm();
-  }, [age, name, sex, surname, mail, phoneNumber]);
 
   return (
     <>
@@ -152,7 +143,7 @@ function ProfilePage() {
             <Form.Group className="mb-3">
               <Form.Label>Phone</Form.Label>
               <Form.Control
-                type="number"
+                type="text"
                 name="userPhone"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
@@ -215,9 +206,8 @@ function ProfilePage() {
         <Button
           variant="primary"
           type="submit"
-          disabled={!formValid}
-          onClick={() => {
-            updateProfile();
+          onClick={(e) => {
+            updateProfile(e);
           }}
         >
           Submit

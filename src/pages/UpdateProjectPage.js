@@ -42,8 +42,10 @@ function UpdateProjectPage() {
     if (title.length === 0) {
       setTitleIsValid(false);
     } else if (description.length === 0) {
+      setTitleIsValid(true);
       setDescriptionIsValid(false);
     } else if (startDate > endDate || !startDate || !endDate) {
+      setDescriptionIsValid(true);
       setDateIsValid(false);
     } else {
       await api.put(
