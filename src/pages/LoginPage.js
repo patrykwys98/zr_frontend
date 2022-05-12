@@ -1,15 +1,19 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import AuthContext from "../context/AuthContext";
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 const LoginPage = () => {
   let { loginUser, user } = useContext(AuthContext);
   let navigate = useNavigate();
-  if (user) {
-    navigate("/");
-  }
+
+  useEffect(() => {
+    if (user) {
+      navigate("/", { replace: true });
+    }
+  });
+
   return (
-    <form onSubmit={loginUser}>
+    <Form onSubmit={loginUser}>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
         <Form.Control type="email" name="username" placeholder="Enter email" />
@@ -22,7 +26,7 @@ const LoginPage = () => {
       <Button variant="primary" type="submit">
         Submit
       </Button>
-    </form>
+    </Form>
   );
 };
 

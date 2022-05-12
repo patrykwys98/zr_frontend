@@ -143,7 +143,7 @@ function ProfilePage() {
             <Form.Group className="mb-3">
               <Form.Label>Phone</Form.Label>
               <Form.Control
-                type="text"
+                type="number"
                 name="userPhone"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
