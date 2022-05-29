@@ -12,7 +12,6 @@ function ProfilePage() {
   const api = useAxios();
   const navigate = useNavigate();
 
-  const [mail, setMail] = useState("");
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [age, setAge] = useState(0);
@@ -64,7 +63,6 @@ function ProfilePage() {
       `${process.env.REACT_APP_API_URL}/profiles/getProfile/`
     );
     if (response.status === 200) {
-      setMail(response.data.email);
       setName(response.data.name ? response.data.name : "");
       setSurname(response.data.surname ? response.data.surname : "");
       setAge(response.data.age ? response.data.age : 18);
@@ -87,14 +85,6 @@ function ProfilePage() {
     }
   };
 
-  const checkEmail = (email) => {
-    if (validator.isEmail(email) === true) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
   let updateProfile = async (e) => {
     e.preventDefault();
     if (
@@ -104,18 +94,17 @@ function ProfilePage() {
       age === ""
     ) {
       setErrorMessage("Enter a Valid Age");
-    } else if (name === "" || surname === "" || mail === "") {
-      setErrorMessage("Enter a Name, Surname and Email");
+    } else if (name === "") {
+      setErrorMessage("Enter a Valid Name");
+    } else if (surname === "") {
+      setErrorMessage("Enter a Valid Surname");
     } else if (checkPhoneNumber(phoneNumber) === false) {
       setErrorMessage("Enter a Valid Phone Number");
-    } else if (checkEmail(mail) === false) {
-      setErrorMessage("Enter a Valid Email");
     } else if (!sex) {
       setErrorMessage("Please enter a gender");
     } else {
       navigate("/confirm", {
         state: {
-          userEmail: mail,
           userName: name,
           userSurname: surname,
           userAge: age,
@@ -140,23 +129,23 @@ function ProfilePage() {
         <Row>
           <Col>
             <Form.Group className="mb-3">
-              <Form.Label>Contact email address</Form.Label>
-              <Form.Control
-                type="email"
-                name="userMail"
-                value={mail}
-                onChange={(e) => setMail(e.target.value)}
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group className="mb-3">
               <Form.Label>Phone</Form.Label>
               <Form.Control
                 type="number"
                 name="userPhone"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
+              />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group className="mb-3">
+              <Form.Label>Age</Form.Label>
+              <Form.Control
+                type="number"
+                name="userAge"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
               />
             </Form.Group>
           </Col>
@@ -188,17 +177,6 @@ function ProfilePage() {
         <Row>
           <Col>
             <Form.Group className="mb-3">
-              <Form.Label>Age</Form.Label>
-              <Form.Control
-                type="number"
-                name="userAge"
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group className="mb-3">
               <Form.Label>Sex</Form.Label>
               <Form.Select
                 aria-label="Select sex"
@@ -211,8 +189,8 @@ function ProfilePage() {
               </Form.Select>
             </Form.Group>
           </Col>
+          <Col></Col>
         </Row>
-
         <Button
           variant="primary"
           type="submit"

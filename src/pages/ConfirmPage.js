@@ -13,7 +13,6 @@ function ConfirmPage() {
     await api.put(`${process.env.REACT_APP_API_URL}/profiles/updateProfile/`, {
       name: state.userName,
       surname: state.userSurname,
-      email: state.userEmail,
       phoneNumber: state.userPhoneNumber,
       sex: state.userSex,
       age: parseInt(state.userAge),
@@ -28,10 +27,10 @@ function ConfirmPage() {
     <>
       <Row>
         <Col>
-          <CardTitleValue title="Email" value={state.userEmail} />
+          <CardTitleValue title="Phone Number" value={state.userPhoneNumber} />
         </Col>
         <Col>
-          <CardTitleValue title="Phone Number" value={state.userPhoneNumber} />
+          <CardTitleValue title="Age" value={state.userAge} />
         </Col>
       </Row>
 
@@ -48,9 +47,7 @@ function ConfirmPage() {
         <Col>
           <CardTitleValue title="Sex" value={state.userSex} />
         </Col>
-        <Col>
-          <CardTitleValue title="Age" value={state.userAge} />
-        </Col>
+        <Col></Col>
       </Row>
       <ButtonGroup className="d-flex m-2">
         <Button className="m-1" onClick={confirmHandler}>
