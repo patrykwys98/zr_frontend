@@ -94,7 +94,7 @@ function UpdateProjectPage() {
           {!titleIsValid && (
             <InfoBadge
               variant="danger"
-              message="Please enter a title for your project"
+              message="Please enter a valid title for your project"
             />
           )}
         </Form.Label>

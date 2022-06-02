@@ -22,7 +22,7 @@ function EditProjectPage() {
   const [project, setProject] = useState([]);
   const [comment, setComment] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [commentCharsLeft, setCommentCharsLeft] = useState(150);
+  const [commentCharsLeft, setCommentCharsLeft] = useState();
 
   const [isCommentValid, setIsCommentValid] = useState(false);
 
@@ -63,10 +63,12 @@ function EditProjectPage() {
   }, [comment]);
 
   useEffect(() => {
-    setIsCommentValid(
-      comment.trim().length > 0 && commentCharsLeft >= 0 ? true : false
-    );
-  }, [comment]);
+    if (commentCharsLeft >= 0) {
+      setIsCommentValid(true);
+    } else {
+      setIsCommentValid(false);
+    }
+  }, [commentCharsLeft]);
 
   return (
     <>
@@ -169,6 +171,7 @@ function EditProjectPage() {
                       message="Invalid comment"
                     />
                   )}
+                  <br />
                   {commentCharsLeft} characters left
                 </Col>
               </Row>
