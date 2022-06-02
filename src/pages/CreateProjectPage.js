@@ -20,11 +20,13 @@ const CreateProjectPage = () => {
   const [dateIsValid, setDateIsValid] = useState(true);
   const [titleIsValid, setTitleIsValid] = useState(true);
   const [descriptionIsValid, setDescriptionIsValid] = useState(true);
+  const [descriptionCharsLeft, setDescriptionCharsLeft] = useState();
+  const [titleCharsLeft, setTitleCharsLeft] = useState();
 
   const addProject = async () => {
-    if (title.trim().length === 0) {
+    if (title.trim().length === 0 || titleCharsLeft < 0) {
       setTitleIsValid(false);
-    } else if (description.trim().length === 0) {
+    } else if (description.trim().length === 0 || descriptionCharsLeft < 0) {
       setTitleIsValid(true);
       setDescriptionIsValid(false);
     } else if (startDate > endDate || !startDate || !endDate) {
@@ -56,6 +58,13 @@ const CreateProjectPage = () => {
     setValues(val);
   };
   useEffect(() => {
+    setDescriptionCharsLeft(2000 - description.trim().length);
+  }, [description]);
+
+  useEffect(() => {
+    setTitleCharsLeft(65 - title.trim().length);
+  }, [title]);
+  useEffect(() => {
     getProfiles();
   }, []);
 
@@ -63,7 +72,7 @@ const CreateProjectPage = () => {
     <>
       <Form.Group className="mb-3">
         <Form.Label>
-          Title
+          Title {titleCharsLeft} chars left
           {!titleIsValid && (
             <InfoBadge
               variant="danger"
@@ -81,7 +90,7 @@ const CreateProjectPage = () => {
 
       <Form.Group className="mb-3">
         <Form.Label>
-          Description
+          Description {descriptionCharsLeft} chars left
           {!descriptionIsValid && (
             <InfoBadge
               variant="danger"

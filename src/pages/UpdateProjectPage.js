@@ -17,6 +17,8 @@ function UpdateProjectPage() {
   const [title, setTitle] = useState(state.project.title);
   const [description, setDescription] = useState(state.project.description);
   const [status, setStatus] = useState(state.project.status);
+  const [descriptionCharsLeft, setDescriptionCharsLeft] = useState();
+  const [titleCharsLeft, setTitleCharsLeft] = useState();
   const [startDate, setStartDate] = useState(
     new Date(state.project.dateOfStart.split("/").reverse().join("/"))
   );
@@ -39,9 +41,9 @@ function UpdateProjectPage() {
   };
 
   const updateProject = async () => {
-    if (title.trim().length === 0) {
+    if (title.trim().length === 0 || titleCharsLeft < 0) {
       setTitleIsValid(false);
-    } else if (description.trim().length === 0) {
+    } else if (description.trim().length === 0 || descriptionCharsLeft < 0) {
       setTitleIsValid(true);
       setDescriptionIsValid(false);
     } else if (startDate > endDate || !startDate || !endDate) {
@@ -65,6 +67,14 @@ function UpdateProjectPage() {
   };
 
   useEffect(() => {
+    setDescriptionCharsLeft(2000 - description.trim().length);
+  }, [description]);
+
+  useEffect(() => {
+    setTitleCharsLeft(65 - title.trim().length);
+  }, [title]);
+
+  useEffect(() => {
     getProfiles();
   }, []);
 
@@ -80,7 +90,7 @@ function UpdateProjectPage() {
     <>
       <Form.Group className="mb-3">
         <Form.Label>
-          Title{" "}
+          Title: {titleCharsLeft} characters left
           {!titleIsValid && (
             <InfoBadge
               variant="danger"
@@ -95,11 +105,11 @@ function UpdateProjectPage() {
           onChange={(e) => setTitle(e.target.value)}
         />
         <Form.Label>
-          Description
+          Description: {descriptionCharsLeft} characters left{" "}
           {!descriptionIsValid && (
             <InfoBadge
               variant="danger"
-              message="Please enter a description for your project"
+              message="Please enter a valid description for your project"
             />
           )}
         </Form.Label>

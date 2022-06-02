@@ -22,6 +22,7 @@ function EditProjectPage() {
   const [project, setProject] = useState([]);
   const [comment, setComment] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [commentCharsLeft, setCommentCharsLeft] = useState(150);
 
   const [isCommentValid, setIsCommentValid] = useState(false);
 
@@ -58,7 +59,13 @@ function EditProjectPage() {
   }, []);
 
   useEffect(() => {
-    setIsCommentValid(comment.trim().length > 0 ? true : false);
+    setCommentCharsLeft(150 - comment.trim().length);
+  }, [comment]);
+
+  useEffect(() => {
+    setIsCommentValid(
+      comment.trim().length > 0 && commentCharsLeft >= 0 ? true : false
+    );
   }, [comment]);
 
   return (
@@ -159,9 +166,10 @@ function EditProjectPage() {
                   ) : (
                     <InfoBadge
                       className="align-center"
-                      message="Comment is empty"
+                      message="Invalid comment"
                     />
                   )}
+                  {commentCharsLeft} characters left
                 </Col>
               </Row>
             </Form.Group>
