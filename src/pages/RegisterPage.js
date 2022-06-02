@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import validator from "validator";
 import InfoMessage from "../components/InfoMessage";
 import AuthContext from "../context/AuthContext";
-
 function RegisterPage() {
   let baseURL = `${process.env.REACT_APP_API_URL}`;
 
@@ -25,8 +24,11 @@ function RegisterPage() {
     e.preventDefault();
     if (!validator.isEmail(mail)) {
       setErrorMessage("Invalid email");
-    } else if (!validator.isLength(password, { min: 6 })) {
-      setErrorMessage("Password must be at least 6 characters long");
+    } else if (
+      !validator.isLength(password.trim(), { min: 6 }) ||
+      password.length !== password.replace(" ", "").length
+    ) {
+      setErrorMessage("Password must be at least 6 characters long and contain no spaces");
     } else {
       await axios
         .post(`${baseURL}/register/`, {

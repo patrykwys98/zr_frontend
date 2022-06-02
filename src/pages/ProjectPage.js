@@ -58,7 +58,7 @@ function EditProjectPage() {
   }, []);
 
   useEffect(() => {
-    setIsCommentValid(comment.length > 0 ? true : false);
+    setIsCommentValid(comment.trim().length > 0 ? true : false);
   }, [comment]);
 
   return (
@@ -93,7 +93,15 @@ function EditProjectPage() {
         </ListGroup.Item>
         <ListGroup.Item className="text-center">
           <h3>Description</h3>
-          {project.description}
+          <Form.Control
+            as="textarea"
+            placeholder={project.description}
+            aria-label="Disabled input example"
+            disabled
+            readOnly
+            plaintext
+            style={{ height: "200px" }}
+          />
         </ListGroup.Item>
 
         <ListGroup.Item className="text-center">

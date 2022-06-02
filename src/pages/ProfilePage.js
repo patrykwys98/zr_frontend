@@ -29,9 +29,12 @@ function ProfilePage() {
     e.preventDefault();
     if (newPassword !== confirmNewPassword) {
       setErrorMessage("Passwords do not match");
-    } else if (oldPassword.length < 6) {
+    } else if (oldPassword.trim().length < 6) {
       setErrorMessage("Old password is required");
-    } else if (newPassword.length < 6 || confirmNewPassword.length < 6) {
+    } else if (
+      newPassword.trim().length < 6 ||
+      confirmNewPassword.trim().length < 6
+    ) {
       setErrorMessage("Password must be at least 6 characters");
     } else {
       const result = await confirm("Are you sure?");
@@ -74,11 +77,8 @@ function ProfilePage() {
   };
 
   const checkPhoneNumber = (number) => {
-    if (
-      validator.isMobilePhone(number) === true &&
-      number.length >= 9 &&
-      number.length <= 12
-    ) {
+    let phoneRegex = /^(\\+)?([ 0-9]){10,16}$/;
+    if (validator.matches(number, phoneRegex)) {
       return true;
     } else {
       return false;
@@ -94,9 +94,9 @@ function ProfilePage() {
       age === ""
     ) {
       setErrorMessage("Enter a Valid Age");
-    } else if (name === "") {
+    } else if (name.trim().length === 0) {
       setErrorMessage("Enter a Valid Name");
-    } else if (surname === "") {
+    } else if (surname.trim().length === 0) {
       setErrorMessage("Enter a Valid Surname");
     } else if (checkPhoneNumber(phoneNumber) === false) {
       setErrorMessage("Enter a Valid Phone Number");
@@ -129,7 +129,7 @@ function ProfilePage() {
         <Row>
           <Col>
             <Form.Group className="mb-3">
-              <Form.Label>Phone</Form.Label>
+              <Form.Label>Phone (with area code)</Form.Label>
               <Form.Control
                 type="number"
                 name="userPhone"

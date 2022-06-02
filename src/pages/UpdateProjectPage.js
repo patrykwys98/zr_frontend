@@ -39,9 +39,9 @@ function UpdateProjectPage() {
   };
 
   const updateProject = async () => {
-    if (title.length === 0) {
+    if (title.trim().length === 0) {
       setTitleIsValid(false);
-    } else if (description.length === 0) {
+    } else if (description.trim().length === 0) {
       setTitleIsValid(true);
       setDescriptionIsValid(false);
     } else if (startDate > endDate || !startDate || !endDate) {
